@@ -1,0 +1,317 @@
+   <section class="bcrumb hide-print">
+       <div class="container">
+           <div class="row">
+               <div class="col-xs-12">
+                   <div class="bcrumb-bar">
+                       <div class="row">
+                           <div class="col-xs-12 col-lg-12 hidden-xs">
+                               <ol class="breadcrumb">
+                                   <li><a ui-sref="root.home" translate>Home</a></li>
+                                   <li><a
+                                           ui-sref="root.category({id:product.category.slug})">{{ product.category|localize:"name" }}</a>
+                                   </li>
+                                   <li class="active">{{ product.name }}</li>
+                               </ol>
+                           </div>
+                           <div class="col-xs-12 col-lg-12 text-right-lg sh-pr">
+                               <ul class="list-inline">
+                                   <li><a href="#"><i class="fa fa-eye"></i> {{ product.views }}
+                                           {{ "View"|translate }}</a></li>
+                                   <li><a href="#" ng-click='report()'><i class="fa fa-flag"></i>
+                                           {{ "Report Abuse"|translate }}</a></li>
+                                   <li ng-show='USER.is("loggedin")'><a href="#" ng-click='add_favorite()'><i
+                                               class="fa fa-star-o"></i> {{ "Favourite"|translate }}</a></li>
+                                   <li class="share-icons">
+                                       <div class="dropdown">
+                                           <button class="btn btn-secondary dropdown-toggle" type="button"
+                                               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false">
+                                               <i class="fa fa-share"></i> {{ "Share"|translate }}
+                                           </button>
+                                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                               <a href socialshare socialshare-provider="facebook"
+                                                   socialshare-redirect-uri="{{ product.share_url }}"
+                                                   socialshare-url="{{ product.share_url }}" title="Facebook"
+                                                   class='dropdown-item'>
+                                                   <i class="fa fa-facebook"></i> facebook
+
+                                               </a>
+                                               <a href socialshare socialshare-provider="twitter"
+                                                   socialshare-text="{{ product.name }}"
+                                                   socialshare-url="{{ product.share_url }}" title="Twitter"
+                                                   class='dropdown-item'>
+                                                   <i class="fa fa-twitter" aria-hidden="true"></i> twitter
+
+                                               </a>
+                                               <a href='#' socialshare socialshare-provider="email"
+                                                   socialshare-subject="77Car Advertisement"
+                                                   socialshare-body='{{ product.share_url }}' title="email"
+                                                   class='dropdown-item'>
+                                                   <i class="fa fa-envelope"></i> email
+
+                                               </a>
+                                           </div>
+                                       </div>
+                                   </li>
+                                   <li><button class="btn print-btn"><i class="fa fa-print"></i>
+                                           {{ "Print"|translate }}</button></li>
+                               </ul>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <div class="row vertical-align backrow">
+
+               <div class="col-xs-12 col-lg-6">
+                   <a href="#" class="btn btn-black" ng-show='has_previous' ng-click='go_back()'> <i
+                           class="fa fa-angle-left"></i> </a><!--  {{ "Back"|translate }} -->
+
+                   <h3 class="product-name">{{ product.name }}</h3>
+               </div>
+           </div>
+       </div>
+   </section>
+
+
+
+
+   <!-- main contents -->
+   <section id="maincontent">
+       <div class="container">
+           <div class="row">
+
+               <!-- ======== contents ========== -->
+               <div class="col-xs-12 col-md-8 col-lg-9 contents">
+
+                   <div class="row ">
+                       <div class="col-xs-12">
+                           <div class="pr-detail-slider">
+                               <div class="watermark">{{ product.created_web|date:"y" }}</div>
+                               <!-- ================== slider ================ -->
+                               <div class="rs-wrap-hdr-8">
+                                   <!-- START REVOLUTION SLIDER 5.0 -->
+                                   <div class="rev_slider_wrapper hide-print">
+                                       <div id="slider-hdr-8" class="rev_slider" data-version="5.0">
+                                           <ul>
+                                               <li data-transition="fade" data-thumb="{{ image.image }}"
+                                                   ng-repeat='image in product.images'>
+                                                   <img ng-src="{{ image.image }}" alt="" width="720" height="500">
+                                               </li>
+                                           </ul>
+
+                                       </div><!-- END REVOLUTION SLIDER -->
+                                   </div><!-- END OF SLIDER WRAPPER -->
+                                  
+                               </div>
+                               <img ng-src="{{ product.first_image }}" class="img-print">
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="row ">
+                       <div class="col-xs-12">
+                           <div class="jumbobox prdetailjumbo">
+                               <div class="row">
+                                   <div class="col-xs-12 col-lg-5">
+                                       <span translate>Posted on: &nbsp; </span> <i class="fa fa-calendar"></i>
+                                       {{ product.created_web|date:"dd/MM/y" }} &nbsp; &nbsp; <i class="fa fa-clock-o"></i>
+                                       {{ product.created_web|date:"hh:mm a"}}
+                                   </div>
+                               </div>
+                               <div class="row">
+                                   <div class="col-xs-12">
+                                       <hr class="hr-dashed">
+                                   </div>
+                               </div>
+                               <div class="row" ng-if='!category.is_service && (product.mileage || product.year || product.color_exterior || product.color_interior || product.car_status || product.car_import)'>
+                                   <div class="col-xs-12">
+                                       <h4 translate>Specifications</h4>
+                                       <table class="table table-striped">
+                                           <tr ng-if='product.mileage'>
+                                               <td translate>Mileage</td> <td>{{ product.mileage }}</td>
+                                           </tr>
+                                           <tr ng-if='product.year'>
+                                               <td translate>Year</td> <td>{{ product.year }}</td>
+                                           </tr>
+                                           <tr ng-if='product.color_exterior'>
+                                               <td translate>Color Exterior</td> <td>{{ product.color_exterior|localize:"name" }}</td>
+                                           </tr>
+                                           <tr ng-if='product.color_interior'>
+                                               <td translate>Color Interior</td> <td>{{ product.color_interior|localize:"name" }}</td>
+                                           </tr>
+                                           <tr ng-if='product.car_status'>
+                                               <td translate>Car Status</td> <td>{{ product.car_status|localize:"name" }}</td>
+                                           </tr>
+                                           <tr ng-if='product.car_import'>
+                                               <td translate>Import</td> <td>{{ product.car_import|localize:"name" }}</td>
+                                           </tr>
+                                       </table>
+                                   </div>
+                               </div>
+                               <div class="row">
+                                   <div class="col-xs-12">
+                                       <h4 translate>Description</h4>
+                                      <p>{{ product.description }}</p>
+                                   </div>
+                               </div>
+                               <div class="row" ng-if='product.latitude != 0 && product.longitude != 0'>
+                                   <div class="col-xs-12">
+                                       <h4 translate>Location of Sale</h4>
+                                   </div>
+                                   <div class="col-xs-12 hide-print">
+                                       <div class="map-wrapper">
+                                           <div id='map'>
+                                               <gm-map center='[product.latitude, product.longitude]'
+                                                       options="{zoom: 10, mapTypeId: google.maps.MapTypeId.ROADMAP}"
+                                                       ng-if='product'>
+                                                   <gm-marker position="[product.latitude, product.longitude]">
+                                                   </gm-marker>
+                                               </gm-map>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                               <div class="row">
+                                   <div class="col-xs-12">
+                                       <hr class="hr-dashed">
+                                   </div>
+                               </div>
+                               <div class="row" ng-if='product.user_socials.facebook || product.user_socials.twitter || product.user_socials.snapchat || product.user_socials.youtube || product.user_socials.sms || product.user_socials.social_email'>
+                                   <div class="col-xs-12">
+                                       <ul class="list-inline">
+                                         <li>{{ "Visit seller at"|translate }}:</li> 
+                                         <li ng-if='product.user_socials.facebook'><a href="{{ product.user_socials.facebook }}" target="_blank"><i class="fa fa-facebook-official fa-lg"></i></a></li>
+                                         <li ng-if='product.user_socials.twitter'><a href="{{ product.user_socials.twitter }}" target="_blank"><i class="fa fa-twitter fa-lg"></i></a></li>
+                                         <li ng-if='product.user_socials.youtube'><a href="{{ product.user_socials.youtube }}" target="_blank"><i class="fa fa-youtube fa-lg"></i></a></li>
+                                         <li ng-if='product.user_socials.snapchat'><a href="{{ product.user_socials.snapchat }}" target='_blank'><i class="fa fa-snapchat fa-lg"></i></a></li>
+                                         <li ng-if='product.user_socials.sms'><a href="https://api.whatsapp.com/send?phone={{ product.user_socials.sms }}&text=Hi,%20I%20contacted%20you%20Through%2077Car%20website." target='_blank'><i class="fa fa-whatsapp fa-lg"></i></a></li>
+                                         <li ng-if='product.user_socials.social_email'><a href="#" socialshare-subject="77Car Advertisement" socialshare socialshare-provider="email" socialshare-to="{{ product.user_socials.social_email }}"><i class="fa fa-envelope fa-lg"></i></a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+
+                   <div class="spacer-xs"></div>
+
+                   <div class="row visible-lg">
+                       <div class="ad-banner text-center bg-banner">
+                           <a href="{{ (DATA.get('_product_website_ads')|filter:{place:3})[0].url }}"><img ng-src="{{ (DATA.get('_product_website_ads')|filter:{place:3})[0].image }}"></a>
+                       </div>
+                   </div>
+               </div>
+
+
+               <!-- ======== sidebar ========== -->
+               <div class="col-xs-12 col-md-4 col-lg-3 sidebar-right hide-print">
+
+                   <div class="jumbobox jumbobox-price text-center">
+                       <div class="jumboprice">{{ "KWD"|translate }} <span>{{ product.price_formatted }}</span></div>
+                       <a href="#" class="btn btn-orange btn-block btn-lg" ng-click='display_number()'
+                           ng-hide='show_number == true'> <i class="fa fa-phone"></i> {{ "Show Number"|translate }}</a>
+                       <a href='#' ng-show='show_number' class="btn btn-orange btn-block btn-lg"><i
+                               class="fa fa-phone"></i> {{ product.phone }}</a>
+                   </div>
+                   <div class="jumbobox">
+                       <h4 translate>Contact Seller</h4>
+                       <form class="contact-seller-form" name='sellForm' novalidate>
+
+                           <div class="form-div">
+                               <input type="email" name='email' placeholder="{{ 'Your email address'|translate }}"
+                                   required errortip='sellForm' ng-model='sell_form.email'
+                                   ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/">
+                           </div>
+                           <div class="form-div">
+                               <input name='phone' type="text" placeholder="{{ 'Your mobile number'|translate }}"
+                                   required errortip='sellForm' ng-model='sell_form.phone'
+                                   ng-pattern='/^[+]?[0-9]{8,11}$/'>
+                           </div>
+                           <div class="form-div">
+                               <textarea name='message' rows="5" placeholder="{{ 'Write your queries'|translate }}"
+                                   required errortip='sellForm' ng-model='sell_form.message'></textarea>
+                           </div>
+
+
+                           <button type="submit" class="btn btn-success" translate
+                               ng-click='submit_contact()'>Send</button>
+                       </form>
+                   </div>
+
+                   <div class="jumbobox jumbo-announce">
+                       <h4 translate>Your safety is our concern</h4>
+                       <p>
+{{ "It is advised that all transactions are conducted face-to-face to avoid fraud and it is strongly advised not to send any money or personal information to anyone you meet online. For any suspicious activities, please Contact Us."|translate }}
+                       </p>
+                   </div>
+
+                   <div class="jumbobox hidden-xs hidden-sm">
+                       <div class="google-ad-lg">
+                           <a href="{{ (DATA.get('_product_website_ads')|filter:{place:2})[0].url }}"><img ng-src="{{ (DATA.get('_product_website_ads')|filter:{place:2})[0].image }}"></a>
+                       </div>
+                   </div>
+
+                   <a ui-sref="root.account.create_ad"
+                       class="btn btn-block btn-success visible-md visible-lg hide-print" translate ng-show='USER.is("loggedin")'>+ Post your ad</a>
+                   <a href="#" class="btn btn-block btn-success visible-md visible-lg hide-print" translate
+                       ng-show='!USER.is("loggedin")' ng-click='create_ad_open()'>+ Post your ad</a>
+               </div>
+
+           </div>
+
+           <div class="row">
+             <div class="col-xs-12 col-md-8 col-lg-9">
+               <!-- -->
+               <!--similar-ads div-->
+               <div class="similar-ads row hide-print" ng-show='related_ads.length > 0'>
+                   <div class="col-xs-12">
+                       <br />
+                       <div class="row">
+                           <div class="col-xs-12">
+                               <h4 translate class="similar-h4">Similar Ads</h4>
+                           </div>
+                       </div>
+
+                       <div class="row product-cards">
+
+                           <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4 card-single"
+                               ng-repeat='ad in related_ads'>
+                               <div class="card-wrap">
+                                   <div class="img-wrap">
+                                       <a
+                                           href='#'
+                                          ng-click='redirect_product(ad)'><img
+                                               ng-src="{{ ad.first_image|resizeto:280:225 }}"></a>
+
+                                        <div class="date-posted-on">
+                                          {{ product.created_web|date: "dd MMMM h a"}}
+                                        </div>
+                                   </div>
+                                   <div class="caption-wrap">
+                                       <a
+                                           href='#'
+                                          ng-click='redirect_product(ad)'>
+                                           <h4>{{ ad.name|description_dots:25 }}</h4>
+                                       </a>
+                                       <p>{{ ad.price_formatted }} {{ "KWD"|translate }}</p>
+                                   </div>
+                               </div>
+                           </div><!-- end each card -->
+                       </div>
+                   </div>
+               </div>
+               <!-- -->
+             </div>
+           </div>
+       </div>
+   </section>
+   <script>
+       $('.print-btn').on('click', function () {
+           var printBlock = $(".hide-print");
+           printBlock.hide();
+           window.print();
+           printBlock.show();
+       });
+   </script>

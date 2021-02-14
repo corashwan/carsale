@@ -1,0 +1,195 @@
+  
+  <section id="home-slider" class="hidden-xs">
+      <div class="container">
+          <div class="row">
+              <div class="col-xs-12">
+                  <div class="rs-wrap-hdr-7">
+                      <!-- START REVOLUTION SLIDER 5.0 -->
+                      <div class="rev_slider_wrapper">
+                          <div id="slider-hdr-7" class="rev_slider" data-version="5.0">
+                              <ul>
+                                  <!-- SLIDE 1 -->
+                                  <li data-transition="fade"
+                                      ng-repeat='slide in DATA.get("_slides")|orderBy:"-order" track by $index'>
+                                      <!-- MAIN IMAGE -->
+                                      <img ng-src="{{ slide.image }}" alt="" width="1170" height="365">
+
+                                      <!-- LAYER NR. 1 -->
+                                      <div class="tp-caption layer1-slide1" data-x="left" data-hoffset="50" data-y="top"
+                                          data-voffset="50" data-whitespace="normal" data-transform_idle="o:1;"
+                                          data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;"
+                                          data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                                          data-mask_out="x:inherit;y:inherit;" data-start="1500"
+                                          data-responsive_offset="off" data-responsive="off" style="z-index: 90;">
+                                          <h1>{{ slide|localize:"title" }}</h1>
+                                          {{ slide|localize:"description" }}
+                                          <a href="{{ slide.url }}" class="btn btn-gfort-o"
+                                              ng-if='slide.url'>{{ slide|localize:"url_text" }}</a>
+                                      </div>
+                                  </li>
+                                  <!-- SLIDE 2 -->
+                              </ul>
+
+                          </div><!-- END REVOLUTION SLIDER -->
+                      </div><!-- END OF SLIDER WRAPPER -->
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+
+  <!-- main contents -->
+  <section id="maincontent">
+      <div class="container">
+          <div class="row">
+              <!-- ======== sidebar ========== -->
+              <div class="col-xs-12 col-md-4 col-lg-3 sidebar hidden-md hidden-lg">
+
+                  <a href="#" class="btn btn-lg btn-default visible-xs visible-sm cat-trigger" translate>Select a
+                      category</a>
+
+                  <div class="cat-wrap">
+
+                      <div class="collapse-wrap" ng-repeat='category in DATA.get("_categories")' >
+                          <div class="collapse-title" collapsetoggle > <span
+                                  class="cat-name">{{ category|localize:"name" }} </span>
+                          </div>
+                          <div class="collapse-detail" ng-if='category.subcategories.length > 0'>
+                              <ul class="list-unstyled">
+                                  <li ng-repeat='subcategory in category.subcategories|orderBy:"order"'>
+                                      <a ui-sref="root.subcategory({id:category.slug, sub_id:subcategory.slug})"
+                                          ng-if='subcategory.subcategories.length == 0'>
+                                          {{ subcategory|localize:"name" }}</a>
+                                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                          data-target="#collapseExample{{ subcategory.id }}" aria-expanded="false" 
+                                          aria-controls="#collapseExample{{ subcategory.id }}" ng-if='subcategory.subcategories.length > 0'>
+                                          {{ subcategory|localize:"name" }} <i class="fa fa-plus"></i>
+                                      </button>
+                                      <div class="collapse" id="collapseExample{{subcategory.id}}"
+                                          ng-if='subcategory.subcategories.length > 0'>
+                                          <div class="card card-body">
+                                              <a ui-sref="root.sub_subcategory({id:category.slug, sub_id:subcategory.slug, sub_sub_id:sub_subcategory.slug})"
+                                                  ng-repeat='sub_subcategory in subcategory.subcategories'>
+                                                  {{ sub_subcategory|localize:"name" }}</a>
+                                          </div>
+                                      </div>
+                                  </li>
+                              </ul>
+
+
+                          </div>
+                      </div> <!-- end each category -->
+
+                      <!-- google ad -->
+
+
+                  </div>
+
+                  <div class="spacer-xs"></div>
+                  <a ui-sref="root.account.create_ad" class="btn btn-block btn-success visible-md visible-lg" translate
+                      ng-show='USER.is("loggedin")'>+ Post your ad</a>
+                  <a href="#" class="btn btn-block btn-success visible-md visible-lg" translate
+                      ng-show='!USER.is("loggedin")' ng-click='create_ad_open()'>+ Post your ad</a>
+
+                  <div class="google-ad-lg">
+                      <a href="{{ (DATA.get('_home_website_ads')|filter:{place:0})[0].url }}"><img
+                              ng-src="{{ (DATA.get('_home_website_ads')|filter:{place:0})[0].image }}"></a>
+                  </div>
+                  <div class="ad-banner bg-banner hidden-lg hidden-md" style="padding-bottom: 20px">
+                      <img src="images/ads1.jpg">
+                  </div>
+              </div>
+
+              <!-- ======== contents ========== -->
+              <div class="col-xs-12 contents">
+                  <h3 translate  ng-show='items.length > 0'>Featured Ads</h3>
+                  <br  ng-show='items.length > 0'>
+                  <div class="row"  ng-show='items.length > 0'>
+                      <div class="container-fluid">
+                          <div class="row product-cards">
+
+                              <div class="col-xs-6 col-sm-4 col-md-3 card-single" ng-repeat='product in items'>
+                                  <div class="card-wrap">
+                                      <div class="img-wrap">
+                                          <a href='#' ng-click='redirect_product(product)'>
+                                              <img ng-src="{{ product.first_image|resizeto:280:225 }}">
+                                          </a>
+                                          <div class="date-posted-on">
+                                            {{ product.created_web|date: "dd MMMM h a"}}
+                                          </div>
+                                      </div>
+                                      <div class="caption-wrap">
+                                          <a href='#' ng-click='redirect_product(product)'>
+                                              <h4>{{ product.name|description_dots:25 }}</h4>
+                                          </a>
+                                          <p>
+                                            {{ product.price_formatted }} {{ "KD"|translate }}
+                                            <!-- only If the ad is featured, add the star icon below-->
+                                            <i class="fa fa-star pull-right flip" ng-mouseover='showTooltip()' data-toggle="tooltip" data-placement="left" title="Featured Ad"></i>
+                                            <!-- -->
+                                          </p>
+                                      </div>
+                                  </div>
+                              </div><!-- end each card -->
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="spacer-xs"></div>
+
+                  <div class="row" ng-show='DATA.get("_home_ads").next'>
+                      <div class="col-xs-12 text-center">
+                          <button class="btn btn-primary load-page" ng-click='increasePage()' translate>load
+                              more</button>
+                      </div>
+                  </div>
+
+                  <h3 translate  >Recent Ads</h3>
+                  <br>
+                  <div class="row" >
+                      <div class="container-fluid">
+                          <div class="row product-cards">
+
+                              <div class="col-xs-6 col-sm-4 col-md-3 card-single" ng-repeat='product in recent_items'>
+                                  <div class="card-wrap">
+                                      <div class="img-wrap">
+                                          <a href='#' ng-click='redirect_product(product)'>
+                                              <img ng-src="{{ product.first_image|resizeto:280:225 }}">
+                                          </a>
+                                          <div class="date-posted-on">
+                                            {{ product.created_web|date: "dd MMMM h a"}}
+                                          </div>
+                                      </div>
+                                      <div class="caption-wrap">
+                                          <a href='#' ng-click='redirect_product(product)'>
+                                              <h4>{{ product.name|description_dots:25 }}</h4>
+                                          </a>
+                                          <p>
+                                            {{ product.price_formatted }} {{ "KD"|translate }}
+                                            <!-- only If the ad is featured, add the star icon below-->
+                                            <i class="fa fa-star pull-right flip" ng-mouseover='showTooltip()' data-toggle="tooltip" data-placement="left" title="Featured Ad"></i>
+                                            <!-- -->
+                                          </p>
+                                      </div>
+                                  </div>
+                              </div><!-- end each card -->
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="spacer-sm"></div>
+
+                  <div class="row">
+                      <div class="col-xs-12 text-center">
+                          <div class="ad-banner bg-banner">
+                              <a href="{{ (DATA.get('_home_website_ads')|filter:{place:1})[0].url }}"><img
+                                      ng-src="{{ (DATA.get('_home_website_ads')|filter:{place:1})[0].image }}"></a>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  </section>

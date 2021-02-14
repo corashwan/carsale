@@ -1,0 +1,382 @@
+<section id="section-topbar" class="hide-print">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6 lang-div">
+                <ul class="list-highlight-color list-flex">
+                    <li>
+                        <button class="btn" (click)="change_language()">
+                            {{'EN' | translate:langService.language}}
+                        </button>
+                    </li>
+                    <!-- <li>
+                        <select name='form-control' [(ngModel)]="country" name='country'
+                            (change)='change_country()'>
+
+                            <option *ngFor='let country of countries | getResults'>{{country.name}}</option>
+                        </select>
+
+                    </li> -->
+                    <li class="header-lang-btn">
+                        <a href="javascript:void(0)" class="ng-binding" >{{'Kuwait' | translate:langService.language}}  <i class="fa fa-angle-down"></i></a>
+                        <nav class="header-language-menu">
+                            <ul>
+                                <li *ngFor='let country of countries'>
+                                    <a href="javascript:void(0)" (click)='change_country(country.id)'>
+                                    {{country | dynamicTranslate:langService.language:'name_en':'name_ar'}} </a>
+                                </li>
+                            </ul>
+                        </nav><!-- /End Header Language Menu -->
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-6 topbar-menu">
+                <ul class="list-highlight-color list-flex">
+                    <li ng-if="!USER.is('loggedin')"><a href="#" #loginModel data-toggle="modal" data-target=".sign-in-up">{{'Sign In' | translate:langService.language}}</a></li>
+                    <li ng-if="!USER.is('loggedin')"><a href="#" data-toggle="modal" data-target=".sign-in-up">{{'Sign Up' | translate:langService.language}}</a></li>
+                    <li ng-if='USER.is("loggedin")'>
+                        <div class="btn-group">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false"> {{'My Account' | translate:langService.language}}  <i
+                                    class="fa fa-angle-down"></i></a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a routerLink="/account" >{{'View profile' | translate:langService.language}}</a></li>
+                                <li><a routerLink="/account/ads" >{{'My Advertisements' | translate:langService.language}}</a></li>
+                                <li><a routerLink="account/my_auctions" >{{'My Auctions' | translate:langService.language}}</a></li>
+                                <li><a routerLink="account/auctions?add" >{{'Create Auction' | translate:langService.language}}</a></li>
+                                <li><a data-toggle="modal" data-target=".sign-in-up" >{{'Sign In' | translate:langService.language}}</a></li>
+                                <li><a href="#" ng-click='logout()'>{{'Log out' | translate:langService.language}}</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="visible-xs">
+                        <div class="hide-print">
+                            <a href="#" data-toggle="modal" data-target="#searchmodal"><i class="fa fa-search"></i></a>
+                        </div>
+                    </li>
+                    <li class="hidden-xs"><a routerLink="/contact-us" routerLinkActive="active" > {{'Help' | translate:langService.language}} </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- modal Registration/Login -->
+<div class="modal fade sign-in-up" id="sign-in-up" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div *ngIf="!verifyOtpStatus"class="step-enterPhone">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="text-center modal-title">{{'Enter Phone Number' | translate:langService.language}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="spacer-xxs"></div>
+                                <div >{{'77car will send you SMS message to verify your phone number' | translate:langService.language}}</div>
+                                <div class="spacer-xxs"></div>
+                                <form [formGroup]="sendOtp" (submit)="submitSendOtp()">
+                                    <div class="phone-verify-number">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="input-group noflip">
+                                                  <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> +{{selected_prefix}}<span class="caret"></span></button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="javascript:void(0)" (click)="selected_prefix='965'">+965 -{{'Kuwait' | translate:langService.language}}</a></li>
+                                                    </ul>
+                                                  </div><!-- /btn-group -->
+                                                  <input formControlName="phone" required minlength="8" maxLength="8" type="text" class="form-control" aria-label="...">
+                                                </div><!-- /input-group -->
+                                                <span class="text-danger" *ngIf="sendOtpSubmitError">{{sendOtpSubmitError}}</span>
+                                                <span class="text-danger" *ngIf="phone.errors && phone.touched && phone.errors.required">This Faild Required</span>
+                                                <span class="text-danger" *ngIf="phone.errors && phone.touched && phone.errors.pattern">this Faild Can`t Contain any Char </span>
+                                                <span class="text-danger" *ngIf="phone.errors && phone.touched && phone.errors.minlength">Min length Must Be 8 </span>
+                                                <span class="text-danger" *ngIf="phone.errors && phone.touched && phone.errors.maxlength">Max length Must Be 8 </span>
+
+                                            </div><!-- row end -->
+                                            <div class="row">
+                                                <button type="submit" [disabled]="sendOtp.status === 'INVALID'" class="btn btn-success btn-block" >{{'Send SMS' | translate:langService.language}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end step-enterPhone -->
+            <div *ngIf="verifyOtpStatus" class="step-enterVerificationCode">
+                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="text-center modal-title" >{{'Verify Phone Number' | translate:langService.language}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12">
+
+                                <div class="spacer-xxs"></div>
+                                <div >{{'Check your SMS and put the code you received below' | translate:langService.language}}</div>
+                                <div class="spacer-xxs"></div>
+                                <form [formGroup]="verifyOtp" (submit)="submitVerifyOtp()" #VerifyOtpForm="ngForm">
+                                    <div class="phone-verify-digits">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-xs-2">
+                                                    <input type="text" required maxLength="1" (keyup)="focusToNextInput(1)" min="0"  pattern="[0-9]" formControlName='code1' #inputCode1 class='inputs'/>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <input type="text" required maxLength="1" (keyup)="focusToNextInput(2)" min="0" pattern="[0-9]" formControlName='code2' #inputCode2 class='inputs'/>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <input type="text" required maxLength="1" (keyup)="focusToNextInput(3)" min="0" pattern="[0-9]" formControlName='code3' #inputCode3 class='inputs'/>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <input type="text" required maxLength="1" (keyup)="focusToNextInput(4)" min="0" pattern="[0-9]" formControlName='code4' #inputCode4 class='inputs'/>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <input type="text" required maxLength="1" (keyup)="focusToNextInput(5)" min="0" pattern="[0-9]" formControlName='code5' #inputCode5 class='inputs'/>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <input type="text" required maxLength="1" (keyup)="focusToNextInput(6)" min="0" pattern="[0-9]" formControlName='code6' #inputCode6  class='inputs'/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <p class="digit" >{{'Enter 6 digit code' | translate:langService.language}}</p>
+                                                <span class="text-danger" *ngIf="verifyOtpSubmitError">{{verifyOtpSubmitError}}</span>
+                                                <span class="text-danger" *ngIf="code1.errors && code1.touched && code1.errors.required">Digit 1 Required</span>
+                                                <span class="text-danger" *ngIf="code1.errors && code1.touched && code1.errors.pattern">Digit 1 Can`t Contain any Char </span>
+                                                <span class="text-danger" *ngIf="code1.errors && code1.touched && code1.errors.minlength">Digit 1 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code1.errors && code1.touched && code1.errors.maxlength">Digit 1 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code2.errors && code2.touched && code2.errors.required">Digit 2 Required</span>
+                                                <span class="text-danger" *ngIf="code2.errors && code2.touched && code2.errors.pattern">Digit 2 Can`t Contain any Char </span>
+                                                <span class="text-danger" *ngIf="code2.errors && code2.touched && code2.errors.minlength">Digit 2 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code2.errors && code2.touched && code2.errors.maxlength">Digit 2 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code3.errors && code3.touched && code3.errors.required">Digit 3 Required</span>
+                                                <span class="text-danger" *ngIf="code3.errors && code3.touched && code3.errors.pattern">Digit 3 Can`t Contain any Char </span>
+                                                <span class="text-danger" *ngIf="code3.errors && code3.touched && code3.errors.minlength">Digit 3 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code3.errors && code3.touched && code3.errors.maxlength">Digit 3 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code4.errors && code4.touched && code4.errors.required">Digit 4 Required</span>
+                                                <span class="text-danger" *ngIf="code4.errors && code4.touched && code4.errors.pattern">Digit 4 Can`t Contain any Char </span>
+                                                <span class="text-danger" *ngIf="code4.errors && code4.touched && code4.errors.minlength">Digit 4 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code4.errors && code4.touched && code4.errors.maxlength">Digit 4 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code5.errors && code5.touched && code5.errors.required">Digit 5 Required</span>
+                                                <span class="text-danger" *ngIf="code5.errors && code5.touched && code5.errors.pattern">Digit 5 Can`t Contain any Char </span>
+                                                <span class="text-danger" *ngIf="code5.errors && code5.touched && code5.errors.minlength">Digit 5 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code5.errors && code5.touched && code5.errors.maxlength">Digit 5 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code6.errors && code6.touched && code6.errors.required">Digit 6 Required</span>
+                                                <span class="text-danger" *ngIf="code6.errors && code6.touched && code6.errors.pattern">Digit 6 Can`t Contain any Char </span>
+                                                <span class="text-danger" *ngIf="code6.errors && code6.touched && code6.errors.minlength">Digit 6 length Must be 1 Number </span>
+                                                <span class="text-danger" *ngIf="code6.errors && code6.touched && code6.errors.maxlength">Digit 6 length Must be 1 Number </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit"  class="btn btn-success btn-block" >{{'Verify and Continue' | translate:langService.language}}</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="spacer-xs"></div>
+                                <p> {{'Code not received ?' | translate:langService.language}} <a href="javascript:void(0)"  (click)="reSendOtp()">{{'Resend SMS' | translate:langService.language}}</a></p>
+                                <p><a href="#" (click)='verifyOtpStatus=false' >{{'Try another number' | translate:langService.language}}</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end step-enterVerificationCode -->
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ========== header ========== -->
+<div class="header-holder hidden-xs hide-print">
+    <section id="header" class="hidden-xs">
+        <div class="container">
+            <div class="row vertical-align">
+                <div class="col-xs-3 col-md-2 col-lg-2">
+                    <div class="logo">
+                        <a ui-sref="root.home"><img src="../../../assets/images/logo.png"></a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-6 col-md-offset-1 col-lg-5 col-lg-offset-1 searchbox">
+                    <form [formGroup]="searchForm" (submit)='search()'>
+                        <div class="input-group">
+                            <input type="text" formControlName="keywords" class="form-control"
+                                placeholder="{{'search in listing'|translate}}" aria-label="..." ng-model='q'
+                                autocomplete="off">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" ng-show='!search_category'> {{'Select a category' | translate}} <span class="caret"></span></button>
+                                <!-- <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false"
+                                    ng-show='search_category'> {{'Search Category' | translate}} <span
+                                        class="caret"></span></button> -->
+                                <ul class="dropdown-menu">
+                                    <li *ngFor="let category of categories" (click)="categorySearch = category.slug">
+                                        <a href="javascript:void(0)" ng-click='$parent.search_category=category'> {{category.name}}  </a>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-default" type="submit"> &nbsp; 
+                                    <img src="../../../assets/images/search.png">
+                                    &nbsp; 
+                                </button>
+                            </div><!-- /btn-group -->
+
+                        </div>
+                    </form>
+                </div>
+                <!-- <div class="hidden-sm hidden-md col-lg-2 downloadapps text-center hide-print">
+                    <strong translate>Download apps</strong>
+                    <ul class="list-inline">
+                        <li><a href=" DATA.get('_mobile_links').ios_url "><img src="images/appstore.png"
+                                    style="margin-top: -6px;"> iOS</a></li>
+                        <li><a href=" DATA.get('_mobile_links').android_url "><img src="images/playstore.png"
+                                    style="margin-top: -6px;"> Android</a></li>
+                    </ul>
+                </div> -->
+                <div class="col-xs-3 col-md-5 col-lg-4 text-right flip hide-print post-ad"  ng-show='USER.is("loggedin")'>
+                    <ul class="list-inline">
+                        <li><a routerLink="/auctions" routerLinkActive="active" class="btn btn-success btn-black-outline" ><i class="fa fa-gavel"></i> &nbsp;  {{'Auctions' | translate:langService.language}} </a></li>
+                        <li *ngIf="token"><a [routerLink]="token ? 'ads/create' : ''"  routerLinkActive="active" class="btn btn-success" >{{'+ Post your ad' | translate:langService.language}} </a></li>
+                        <li  *ngIf="!token" ><a  data-toggle="modal" data-target=".sign-in-up" class="btn btn-success" >{{'+ Post your ad' | translate:langService.language}} </a></li>
+                    </ul>
+                </div>
+                <!-- <div class="col-xs-3 col-md-5 col-lg-4 text-right flip hide-print"  *ngIf="!token">
+                    <ul class="list-inline">
+                        <li><a routerLink="/auctions" routerLinkActive="active" class="btn btn-success btn-black-outline" ><i class="fa fa-gavel"></i> &nbsp;  {{'Auctions' | translate:langService.language}}</a></li>
+                        <li ><a href="#" class="btn btn-success"   ng-click='create_ad_open()'> {{'+ Post your ad' | translate:langService.language}}</a></li>
+                    </ul>
+                </div> -->
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!-- header mobile -->
+<div class="header-m-holder visible-xs">
+    <section id="header-mobile" class="visible-xs hide-print">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 header-m">
+
+                    <a ui-sref="root.home"><img src="../../../assets/images/logo.png"></a>
+
+                </div>
+            </div>
+            <div class="row post-ad-mobile hide-print" ng-show='USER.is("loggedin")'>
+                <div class="col-xs-12 mb-10">
+                    <a ui-sref="root.auctions" class="btn btn-success btn-black-outline btn-block" ><i class="fa fa-gavel"></i> &nbsp;{{'Auctions' | translate:langService.language}} </a>
+                </div>
+                <div class="col-xs-12">
+                    <a ui-sref="root.account.create_ad" class="btn btn-success btn-block" >{{'+ Post your ad' | translate:langService.language}}</a>
+                </div>
+            </div>
+            <div class="row post-ad-mobile hide-print" ng-show='!USER.is("loggedin")'>
+                <div class="col-xs-12 mb-10">
+                    <a ui-sref="root.auctions" class="btn btn-success btn-black-outline btn-block" ><i class="fa fa-gavel"></i> &nbsp;{{'Auctions' | translate:langService.language}} </a>
+                </div>
+                <div class="col-xs-12">
+                    <a href="#" class="btn btn-success btn-block" ng-click='create_ad_open()' > {{'+ Post your ad' | translate:langService.language}}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Modal for searchbox in mobile -->
+<div class="modal fade" id="searchmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body searchbox">
+                <form ng-submit='search()'>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder=" 'search in listing'|translate "
+                            aria-label="..." ng-model='q' autocomplete="off">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" ng-show='!search_category'> {{'Select a category' | translate:langService.language}}<span class="caret"></span></button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" ng-show='search_category'> search_category <span class="caret"></span></button>
+                            <ul class="dropdown-menu ">
+                                <li *ngFor="let category of categories ">
+                                    <a href="#" ng-click='$parent.search_category=category'> {{category.name_en}} </a>
+                                </li>
+                            </ul>
+                            <button class="btn btn-default" type="submit"> &nbsp; <i class="fa fa-search"></i>
+                                &nbsp;
+                            </button>
+                        </div><!-- /btn-group -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ============ Menubar ; visible only in desktops ======== -->
+  <section class="menubar visible-md visible-lg">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="menuwrap">
+            <ul class="list-inline list-menu">
+
+                <li *ngFor="let category of categories|limit:0:10:showMore">
+                    <a [routerLink]="['/category', category.slug]">
+                        {{category.name | dynamicTranslate:langService.language:'name_en':'name_ar'}}
+                        <i class="fa fa-angle-down" *ngIf='category.subcategories.length > 0'></i>
+                    </a>
+                    <div class="dropdown-wrap" *ngIf='category.subcategories.length > 0'>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-2" *ngFor="let subcategory of category.subcategories|limit:0:5:false">
+                                    <ul class="list-unstyled list-submenu">
+                                        <li>
+                                            <a [routerLink]="['/category/',category.slug,subcategory.slug]" routerLinkActive="active">
+                                                {{subcategory.name | dynamicTranslate:langService.language:'name_en':'name_ar'}}
+                                            </a>
+                                        </li>
+                                        <li *ngFor='let sub_subcategory of subcategory.subsubcategories|limit:0:5:false'>
+                                            <a [routerLink]="['/category/',category.slug,subcategory.slug,sub_subcategory.slug]" routerLinkActive="active">
+                                                {{sub_subcategory.name | dynamicTranslate:langService.language:'name_en':'name_ar'}}
+                                            </a>
+                                        </li>
+                                        <li *ngIf='subcategory.length > 5'>
+                                            <a [routerLink]="['/category/',category.slug,subcategory.slug]" routerLinkActive="active" >
+                                                {{'Others' | translate:langService.language}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-2" *ngIf='category.length > 5'>
+                                    <ul class="list-unstyled list-submenu">
+                                        <li><a routerLink="/{{category.slug}}" routerLinkActive="active" > {{'Others' | translate:langService.language}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li *ngIf="categories.length > 10">
+                    <a href='javacript:void(0)' (click)="showMore = !showMore">{{showMore ? '-' : '...'}}</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> <!-- end menubar -->

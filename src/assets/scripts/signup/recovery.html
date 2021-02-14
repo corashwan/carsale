@@ -1,0 +1,47 @@
+ <section class="section-dotted-layer">
+            <div class="container">
+                
+                <div class="row">
+                    <div class="col-xs-12">
+                        <ol class="breadcrumb">
+                            <li><a ui-sref="root.home">Home</a></li>
+                            <li translate>Recover Password</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="heading-dual">
+                            <h1 translate>RECOVER PASSWORD</h1>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" name='recoverForm' novalidate>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4 col-lg-offset-4">
+   
+                            <input type="email" id='account_form_email' errortip="recoverForm" name="email" ng-model="email" ng-minlength="5" placeholder="{{ 'Email'|translate }}" ng-pattern="/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/"  required>
+            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                        <div class="gfort-recaptcha" key="recaptchakey" on-create="captcha_create(widgetId)" on-expire="captcha_expired()" on-success="captcha_response(response)" vc-recaptcha></div>
+                        </div>
+                        <div class="col-xs-12 text-center">
+
+                            <button type="submit" class="btn btn-orange btn-lg"  ng-click="submit()" ng-disabled='sending'>Recover Password</button>
+                            <p ng-show='not_sent == false'>{{ "Please check your mail. We sent you a mail with steps to reset your password."|translate }}</p>
+                                                
+
+                    
+                        </div>
+                    </div>
+                </form>
+                
+                
+                <div class="spacer-md"></div>
+                
+            </div>
+        </section>

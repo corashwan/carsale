@@ -1,0 +1,48 @@
+<h3 translate  ng-show='items.length > 0'>Featured Ads</h3>
+               <br  ng-show='items.length > 0'>
+               <div class="row"  ng-show='items.length > 0'>
+                   <div class="container-fluid">
+                       <div class="row product-cards">
+
+                           <div *ngFor="let featured of api"  class="col-xs-6 col-sm-4 col-md-3 card-single">
+                               <div class="card-wrap">
+                                   <div class="img-wrap">
+                                       <a [routerLink]="['/category/',featured.category_slug,featured.sub_category_slug ,featured.sub_sub_category_slug ,'ads', featured.id]  ">
+                                            <ng-container *ngFor="let image of featured.images">
+                                                <img *ngIf="image.is_cover == true " [src]="image.image" style="width: 280px; height: 225px;"> <!--  |resizeto:280:225 -->
+                                            </ng-container>
+                                       </a>
+                                       <div class="date-posted-on">
+
+                                        {{featured.created | date:"dd MMMM ha"}}
+                                       </div>
+                                   </div>
+                                   <div class="caption-wrap">
+                                       <a [routerLink]="['/category/',featured.category_slug,featured.sub_category_slug ,featured.sub_sub_category_slug ,'ads', featured.id] " routerLinkActive="active">
+                                           <h4> {{featured.name}} </h4>
+
+                                       </a>
+                                       <p>
+                                            {{featured.price}} {{"KD"|translate}}
+                                         <!-- only If the ad is featured, add the star icon below-->
+                                         <i class="fa fa-star pull-right flip" ng-mouseover='showTooltip()' data-toggle="tooltip" data-placement="left" title="Featured Ad"></i>
+                                         <!-- -->
+                                       </p>
+                                   </div>
+                               </div>
+                           </div><!-- end each card -->
+
+
+
+                       </div>
+                   </div>
+               </div>
+
+               <div class="spacer-xs"></div>
+
+               <!-- <div class="row" ng-show='DATA.get("_home_ads").next'>
+                   <div class="col-xs-12 text-center">
+                       <button class="btn btn-primary load-page" ng-click='increasePage()' translate>load
+                           more</button>
+                   </div>
+               </div> -->

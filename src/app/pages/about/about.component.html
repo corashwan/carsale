@@ -1,0 +1,30 @@
+<section class="section-dotted-layer">
+   <div class="container">
+       
+       <div class="row">
+           <div class="col-xs-12">
+               <ol class="breadcrumb">
+                   <li><a routerLink="/">{{"Home" | translate}}</a></li>
+                   <li>{{ about.page.name }}</li>
+               </ol>
+           </div>
+       </div>
+       <div class="row">
+           <div class="col-xs-12">
+               <div class="heading-dual">
+                   <h1>{{ about.page.name }}</h1>
+
+               </div>
+           </div>
+       </div>
+       <div class="row">
+           <div class="col-xs-12">
+               <div class="transparent-box about-box" ng-bind-html='about.page.description'>
+               </div>
+           </div>
+       </div>
+       
+       <div class="spacer-lg"></div>
+       
+   </div>
+</section>

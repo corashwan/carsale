@@ -1,0 +1,109 @@
+<section id="maincontent">
+    <div class="container">
+        <div class="row">
+            <!-- ======== sidebar ========== -->
+            <div class="col-xs-12 col-md-4 col-lg-3 sidebar">
+                <div class="my-acc-sidebox">
+                    <div class="my-acc-photo">
+                        <h3 translate>My Account</h3>
+                        <img class='img-circle' ng-src=" USER.data().avatar_image.image|resizeto:180:180 " ng-show="USER.data().avatar_image">
+                        <img class="img-circle" [src]="user.image" ng-show="!USER.data().avatar_image">
+                        <h4> {{user.full_name}} </h4>
+                    </div>
+                    <div class="my-acc-menu">
+                        <ul class="list-unstyled">
+                            <li class="active"><a href="javascript:void(0)">{{"Edit Profile"|translate}}</a></li>
+                            <li><a routerLink="ads"> {{"My Ads"|translate}}  {{user.num_of_ads}}</a></li>
+                            <li><a routerLink="my_auctions">{{"My Auctions"|translate}}</a></li>
+                            <li><a routerLink="favorites"> {{"Favourites"|translate}}  {{wishList.count}}</a></li>
+                            <li><a href="#" translate ng-click='logout()'>Log out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======== contents ========== -->
+            <div class="col-xs-12 col-md-8 col-lg-9 contents contents-edit-profile">
+
+                <div class="white-container">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12"><h3 class="margin-top-0">{{"Edit Profile"|translate}}</h3></div>
+                            <div class="spacer-md"></div>
+                        </div>
+                        <div class="row edit-profile-form">
+                          <form [formGroup]="editUser" (submit)="submitEditUser()" >
+                            <div class="col-xs-12 col-sm-8 col-md-9 col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-user"></i>&nbsp;</span>
+                                    <input type="text"class="form-control edit_prof" errortip="editForm" formControlName="full_name" [placeholder]=" 'Full Name'|translate " [(ngModel)]="user.full_name" ng-minlength="2" required aria-describedby="basic-addon2">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon3"><i class="fa fa-envelope"></i></span>
+                                    <input type="email" class="form-control edit_prof" errortip="editForm" [placeholder]=' "Email"|translate ' [(ngModel)]="user.email" ng-pattern="/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/"  formControlName='email' aria-describedby="basic-addon3">
+
+                                </div>
+                                <span class="text-danger" *ngIf="email.touched && email.errors && email.errors.email">This Email Not Faild</span>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon4"><i class="fa fa-mobile"></i>&nbsp;</span>
+                                    <input type="tel" class='form-control edit_prof' errortip="editForm" formControlName="phone" [placeholder]="'Mobile No'|translate " [(ngModel)]="user.phone" required ng-pattern='/^[0-9]{8,13}$/' aria-describedby="basic-addon4">
+                                </div>
+
+                                <span class="text-danger" *ngIf="phone.touched && phone.errors && phone.errors.required">This Faild Is Required</span>
+                                <span class="text-danger" *ngIf="phone.touched && phone.errors && phone.errors.maxlength">Max Length is 8</span>
+                                <span class="text-danger" *ngIf="phone.touched && phone.errors && phone.errors.minlength">Min Length is 8</span>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-snapchat"></i>&nbsp;</span>
+                                    <input type="text"class="form-control edit_prof" errortip="editForm" formControlName="snapchat" [placeholder]=" 'Snapchat'|translate " [(ngModel)]="user.snapchat" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-facebook"></i>&nbsp;</span>
+                                    <input type="text"class="form-control edit_prof" errortip="editForm" formControlName="facebook" [placeholder]=" 'Facebook'|translate " [(ngModel)]="user.facebook" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-twitter"></i>&nbsp;</span>
+                                    <input type="text"class="form-control edit_prof" errortip="editForm" formControlName="twitter" [placeholder]=" 'Twitter'|translate " [(ngModel)]="user.twitter" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-youtube"></i>&nbsp;</span>
+                                    <input type="text"class="form-control edit_prof" errortip="editForm" formControlName="youtube" [placeholder]=" 'YouTube'|translate " [(ngModel)]="user.youtube" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-envelope"></i>&nbsp;</span>
+                                    <input type="text"class="form-control edit_prof" errortip="editForm" formControlName="social_email" [placeholder]=" 'Social Email'|translate " [(ngModel)]="user.social_email" aria-describedby="basic-addon2" >
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-phone"></i>&nbsp;</span>
+                                    <input type="text"class="form-control edit_prof" errortip="editForm" formControlName="sms" [placeholder]=" 'SMS'|translate " ng-model="user.sms" aria-describedby="basic-addon2" ng-pattern='/^[+]?[0-9]{8,11}$/'>
+                                </div>
+
+                                <div class="form-group">
+                                    <label translate>Profile Image</label>
+
+
+                                <img ng-src=" user.avatar_image.image|resizeto:180:180 " ng-show="user.avatar_image.image">
+
+                                <div class="custom-fileupload" ng-hide="image_loader || logo || user.avatar_image">
+
+                                    <input type="file" class='form-control' ng-model="uploaded_image"  accept="'image/*'" (change)="onFileChange($event)"  ngf-validate-async-fn="upload_validate($file)" ngf-select="uploadFiles($file, $invalidFiles)">
+
+
+                                </div>
+                                    <div class="photoUpload" ng-show="user.avatar_image">
+                                        <a href='#' ng-click="delete_image(user.avatar_image.id)"><i class="fa fa-trash"></i>  {{"Delete Image"|translate}} </a>
+                                    </div>
+                                </div>
+
+                                <div class="spacer-xs"></div>
+
+                                <button type="submit" [disabled]="editUser.status ==='INVALID' || editUser.pristine == true " class="btn btn-wide btn-success" ng-click="save()" ng-disabled='saving' translate>Save</button>
+                            </div>
+                          </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

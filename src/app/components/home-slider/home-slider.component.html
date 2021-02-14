@@ -1,0 +1,39 @@
+<section id="home-slider" class="hidden-xs">
+   <div class="container">
+       <div class="row">
+           <div class="col-xs-12">
+               <div class="rs-wrap-hdr-7">
+                   <!-- START REVOLUTION SLIDER 5.0 -->
+                   <div class="rev_slider_wrapper">
+                       <div id="slider-hdr-7" class="rev_slider" data-version="5.0">
+                           <ul>
+                               <!-- SLIDE 1 -->
+                               <li data-transition="fade"
+                                   *ngFor="let slider of api">
+                                   {{slider.title}}
+                                   <!-- MAIN IMAGE -->
+                                   <img ng-src="{{slider.image}}" alt="" width="1170" height="365">
+
+                                   <!-- LAYER NR. 1 -->
+                                   <div class="tp-caption layer1-slide1" data-x="left" data-hoffset="50" data-y="top"
+                                       data-voffset="50" data-whitespace="normal" data-transform_idle="o:1;"
+                                       data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;"
+                                       data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                                       data-mask_out="x:inherit;y:inherit;" data-start="1500"
+                                       data-responsive_offset="off" data-responsive="off" style="z-index: 90;">
+                                       <h1> slide|localize:"title" </h1>
+                                        slide|localize:"description"
+                                       <a href=" {{slider.url}} " class="btn btn-gfort-o"
+                                           ng-if='slider.url'> slide|localize:"url_text" </a>
+                                   </div>
+                               </li>
+                               <!-- SLIDE 2 -->
+                           </ul>
+
+                       </div><!-- END REVOLUTION SLIDER -->
+                   </div><!-- END OF SLIDER WRAPPER -->
+               </div>
+           </div>
+       </div>
+   </div>
+</section>

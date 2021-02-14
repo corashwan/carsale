@@ -1,0 +1,34 @@
+<h3 translate  >Recent Ads</h3>
+<br>
+<div class="row" >
+      <div class="container-fluid">
+         <div class="row product-cards">
+
+            <div *ngFor="let recent_ads of api" class="col-xs-6 col-sm-4 col-md-3 card-single">
+                  <div class="card-wrap">
+                     <div class="img-wrap">
+                        <a [routerLink]="['/category/',recent_ads.category_slug,recent_ads.sub_category_slug ,recent_ads.sub_sub_category_slug ,'ads', recent_ads.id]  " >
+                           <ng-container *ngFor="let image of recent_ads.images">
+                              <img *ngIf="image.is_cover == true " src="{{image.image}}" style="width: 280px; height: 225px;"> <!--  |resizeto:280:225 -->
+                           </ng-container>
+                        </a>
+                        <div class="date-posted-on">
+                           {{recent_ads.created |date: "dd MMMM h a"}}
+                        </div>
+                     </div>
+                     <div class="caption-wrap">
+                        <a [routerLink]="['/category/',recent_ads.category_slug,recent_ads.sub_category_slug ,recent_ads.sub_sub_category_slug ,'ads', recent_ads.id]  ">
+                              <h4> {{recent_ads.name}} </h4>
+                        </a>
+                        <p>
+                           {{recent_ads.price}} {{"KD"|translate}}
+                           <!-- only If the ad is featured, add the star icon below-->
+                           <i class="fa fa-star pull-right flip" ng-mouseover='showTooltip()' data-toggle="tooltip" data-placement="left" title="Featured Ad"></i>
+                           <!-- -->
+                        </p>
+                     </div>
+                  </div>
+            </div><!-- end each card -->
+         </div>
+      </div>
+</div>

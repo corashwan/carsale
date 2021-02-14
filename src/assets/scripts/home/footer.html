@@ -1,0 +1,85 @@
+        <div class="footer-top hide-print" footeraccordion>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-2">
+                        <div class="acc-wrap acc-detail-open-default">
+                            <div class="acc-title" translate>Browse Category</div>
+                            <div class="acc-detail">
+                                <ul class="list-unstyled">
+                                    <li ng-repeat='category in DATA.get("_categories")|filter:{display_in_footer:true}'><a ui-sref="root.category({id:category.slug})">{{ category|localize:"name" }}</a></li>
+                                    <li><a ui-sref="root.category({id:DATA.get('_categories')[0].slug})" class="link-blue" translate>More</a></li>
+                                </ul>
+                            </div>
+                        </div> <!-- end each accordion item -->
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-2">
+                        <div class="acc-wrap acc-detail-open-default">
+                            <div class="acc-title" translate>Important Links</div>
+                            <div class="acc-detail">
+                                <ul class="list-unstyled">
+                                    <li><a ui-sref="root.page({slug:'terms-and-conditions'})" >{{ "Terms & Conditions"|translate }}</a></li>
+                                    <li><a ui-sref="root.page({slug:'privacy-policy'})" translate>Privacy Policy</a></li>
+                                    <li><a ui-sref="root.faq" translate>FAQ's</a></li>
+                                </ul>
+                            </div>
+                        </div> <!-- end each accordion item -->
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-2">
+                        <div class="acc-wrap acc-detail-open-default">
+                            <div class="acc-title" translate>Quick Links</div>
+                            <div class="acc-detail">
+                                <ul class="list-unstyled">
+                                    <li><a ui-sref="root.page({slug:'about-us'})" translate>About Us</a></li>
+                                    <li><a ui-sref="root.contact" translate>Contact Us</a></li>
+                                    <li><a ui-sref="root.page({slug:'advertise-with-us'})" translate>Advertise with us</a></li>
+                                </ul>
+                            </div>
+                        </div> <!-- end each accordion item -->
+                    </div>
+                    <div class="clearfix visible-sm"></div>
+                    <div class="col-xs-12 col-sm-4 col-md-2">
+                        <div class="acc-wrap acc-detail-open-default">
+                            <div class="acc-title" translate>Download Apps</div>
+                            <div class="acc-detail">
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ DATA.get('_mobile_links').ios_url }}" target="_blank"><img src="images/appstore-white.png" style="margin-top: -6px;">
+                                            iOS</a></li>
+                                    <li><a href="{{ DATA.get('_mobile_links').android_url }}" target="_blank"><img src="images/playstore.png" style="margin-top: -6px;">
+                                            Android</a></li>
+                                </ul>
+                            </div>
+                        </div> <!-- end each accordion item -->
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-4">
+                        <div class="acc-wrap acc-detail-open-default">
+                            <div class="acc-title" translate>Stay Updated</div>
+                            <div class="acc-detail">
+                                <newsletter></newsletter>
+                            </div>
+                        </div> <!-- end each accordion item -->
+
+                        <div class="spacer-xs hidden-xs"></div>
+
+                        <div class="acc-wrap acc-detail-open-default">
+                            <div class="acc-title" translate>Social Media</div>
+                            <div class="acc-detail">
+                                <ul class="list-inline footer-social">
+                                    <li ng-repeat="link in DATA.get('_social-links')"><a href="{{ link.url }}"  target='_blank'><i class="fa fa-{{ link.code }}"></i></a></li>
+                                </ul>
+                            </div>
+                        </div> <!-- end each accordion item -->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="copyright">
+                            <p class="text-center">
+                                {{ DATA.get('_copyright') | localize:'copyright' }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

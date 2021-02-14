@@ -1,0 +1,27 @@
+<section class="section-faq">
+   <div class="container">
+       <div class="row">
+           <div class="col-xs-12">
+               <h3 class="margin-top-0" translate>Frequently Asked Questions</h3>
+               <div class="spacer-xxs"></div>
+           </div>
+       </div>
+   </div>
+   <div class="container ">
+       <div class="panel-group" id="faqAccordion">
+           <div class="panel panel-default " ng-repeat='question in faq track by $index'>
+               <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question $index ">
+                   <h4 class="panel-title">
+                       <a href="#" class="ing"> question|localize:"name" </a>
+                   </h4>
+
+               </div>
+               <div id="question $index " class="panel-collapse collapse" style="height: 0px;">
+                   <div class="panel-body" ng-bind-html='question|localize:"answer"'></div>
+               </div>
+           </div>
+
+       </div>
+       <!--/panel-group-->
+   </div>
+</section>

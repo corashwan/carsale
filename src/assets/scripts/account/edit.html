@@ -1,0 +1,263 @@
+        <section class="maincontent-postad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-lg-10 col-lg-offset-1">
+                        <div class="white-wrapper">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <ol class="breadcrumb">
+                                            <li><a ui-sref="root.home" translate>Home</a></li>
+                                            <li class="active" translate>Edit Your Ad</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h3 >{{ ad.name }}</h3>
+                                        <div class="spacer-xs"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-8">
+                                        <form name='adForm' novalidate>
+                                           <div class="product-img text-center"  ng-show='images.length < 8'>
+                                              <div class="image">
+                                                 <div class="upload-logo">
+                                                   <button type="file" ngf-accept="'image/*'" ngf-max-size="10MB"   ng-model="uploaded_image" ngf-select="uploadFiles($file, $invalidFiles)" ><img src="images/add-photos-img.jpg" alt="" ></button>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                       
+                                        
+                                           <div class="product-img text-center" ng-repeat="img in images track by $index ">
+                                              <div class="image">
+                                                 <a href="#" ng-click="delete_image(img.id)" class="product-crose"><img src="images/product-crose.jpg" alt=""></a>
+                                                 <img ng-src="{{ img.image }}">
+                                              </div>
+                                              <div class="radio-box">
+                                                 <input type="checkbox" ng-model='img.is_cover' name='is_cover'  class="checkbox-btn" id="ch{{$index}}" ng-change='updateImage(img)'>
+                                                 <label for="ch{{$index}}" class="checkbox-css">Set as default</label>
+                                              </div>
+                                           </div>
+                                        
+                                        <h4 translate>Ad information</h4>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                                <input   id='name' type="text" ng-model='ad.name' required errortip='adForm' name='name' placeholder="{{ 'Ad title'|translate }}" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                                <input id='phone' type="text" ng-model='ad.phone' required errortip='adForm' name='phone' placeholder="{{ 'Phone'|translate }} +965xxxxxxx"  ng-pattern='/^[+]?[0-9]{8,11}$/'/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12 ">
+                                                <select ng-model='ad.country' name='country' required errortip='adForm' id='country'>
+                                                    <option value=''>{{ "Select Country"|translate }}</option>
+                                                    <option ng-repeat='category in DATA.get("_countries")' value='{{ category.id }}' ng-selected='selected($parent.ad.country, category.id)'>{{ category|localize:"name" }}</option>
+                                            
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row" ng-if='ad.country'>
+                                            <div class="form-group col-xs-12 ">
+                                                <select ng-model='ad.governorate' name='governorate' 
+                                                    errortip='adForm' id='govenorate'>
+                                                    <option value=''>{{ "Select Governorate"|translate }}</option>
+                                                    <option ng-repeat='governorate in DATA.get("_governorates")|filter:{country:ad.country}'
+                                                        value='{{ governorate.id }}' >{{ governorate|localize:"name" }}
+                                                    </option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12 col-sm-6" ng-if='ad'>
+
+                                                <select ng-model='ad.category' name='category' required errortip='adForm' id='category' ng-change='update_subcategories(ad.category)'>
+                                                    <option ng-repeat='category in categories|filter:{is_service:is_service}' ng-value='category' ng-selected='selected(ad.category.id, category.id)'>{{ category|localize:"name" }}</option>
+                                            
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="form-group col-xs-12 col-sm-6" ng-if='ad.category && ad.category.available_subcategories.length > 0'>
+                                                <select id='subcategory' name='subcategory' ng-model='ad.subcategory' required errortip='adForm'  ng-change='update_sub_subcategories(ad.subcategory)'>
+                                                    <option value='{{ subcategory.id }}' ng-repeat='subcategory in subcategories'  ng-selected='sub_selected(ad.subcategory, subcategory.id)'>{{ subcategory|localize:"name" }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class='row' ng-if='sub_subcategories.length > 0'>
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                                <select name='sub_subcategory' ng-model='ad.sub_subcategory' required
+                                                    errortip='adForm' >
+                                                    <option value='{{ subcategory.id }}'
+                                                        ng-repeat='subcategory in sub_subcategories' ng-selected='sub_selected(ad.sub_subcategory, subcategory.id)'>
+                                                        {{ subcategory|localize:"name" }}</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row" ng-if='ad.category && !ad.category.is_service'>
+                                                <div class="form-group col-xs-12 col-sm-6">
+                                                    <input id='mileage' type="number" ng-model='ad.mileage'
+                                                        errortip='adForm' name='mileage'
+                                                        placeholder="{{ 'Mileage'|translate }}" />
+                                                </div>
+                                                <div class="form-group col-xs-6 ">
+                                                    <select ng-model='ad.year' name='year'
+                                                        errortip='adForm' id='year'>
+                                                        <option value=''>{{ "Select Year"|translate }}</option>
+                                                        <option ng-repeat='year in DATA.get("_car_info").years'
+                                                            value='{{ year }}'>{{ year }}
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row" ng-if='ad.category && !ad.category.is_service'>
+                                                <div class="form-group col-xs-6 ">
+                                                    <select ng-model='ad.color_exterior' name='color_exterior'
+                                                        errortip='adForm' id='color_exterior'>
+                                                        <option value=''>{{ "Select Color Exterior"|translate }}</option>
+                                                        <option ng-repeat='category in DATA.get("_car_info").exteriors'
+                                                            value='{{ category.id }}'>{{ category|localize:"name" }}
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-xs-6 ">
+                                                    <select ng-model='ad.color_interior' name='color_interior'
+                                                        errortip='adForm' id='color_interior'>
+                                                        <option value=''>{{ "Select Color Interior"|translate }}</option>
+                                                        <option ng-repeat='category in DATA.get("_car_info").interiors'
+                                                            value='{{ category.id }}'>{{ category|localize:"name" }}
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row" ng-if='ad.category && !ad.category.is_service'>
+                                                <div class="form-group col-xs-6 ">
+                                                    <select ng-model='ad.car_status' name='car_status'
+                                                        errortip='adForm' id='car_status'>
+                                                        <option value=''>{{ "Select Status"|translate }}</option>
+                                                        <option ng-repeat='category in DATA.get("_car_info").statuses'
+                                                            value='{{ category.id }}'>{{ category|localize:"name" }}
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-xs-6 ">
+                                                    <select ng-model='ad.car_import' name='car_import'
+                                                        errortip='adForm' id='car_import'>
+                                                        <option value=''>{{ "Select Import"|translate }}</option>
+                                                        <option ng-repeat='category in DATA.get("_car_info").imports'
+                                                            value='{{ category.id }}'>{{ category|localize:"name" }}
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                               <input id='price' type="number" step='0.1' min='0.1' name='price' errortip='adForm' required ng-model='ad.price' placeholder='{{ "Price (KWD)"|translate }}'>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                                <textarea name='description' id='description' placeholder="{{ 'Description'|translate }}" ng-model='ad.description' required errortip='adForm'></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                                <div id='map'>
+                                                    <gm-map center='[ad.latitude, ad.longitude]' options="{zoom: 12, mapTypeId: google.maps.MapTypeId.ROADMAP}" >
+                                                      <gm-marker  position='[ad.latitude ,ad.longitude]' options="{ draggable: true, icon: markerIcon}" on-dragend="ad.latitude=marker.getPosition().lat(); ad.longitude=marker.getPosition().lng()">
+                                                      </gm-marker>
+                                                    </gm-map>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                                <div class="ad-type">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-6">
+                                                            <label class="text-center">
+                                                                <input type="radio" name="adType"
+                                                                    ng-checked='ad.paid_featured == false' class="adTypeRadio" disabled='true'>
+                                                                <div class="adtype-info adtype-info-free">
+                                                                    <div class="vmiddle">
+                                                                        {{ "Free Ad"|translate }}
+                                                                    </div>
+                                                                    <div class="checkmark">
+                                                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-6">
+                                                            <label>
+                                                                <input type="radio" name="adType" value='2' class="adTypeRadio" disabled='true' ng-checked='ad.paid_featured == true'>
+                                                                <div class="adtype-info adtype-info-featured">
+                                                                    {{ "Featured Ad"|translate }} <br>
+                                                                    <ul class="list-unstyled">
+                                                                        <li>
+                                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                                            {{ "Show in first page"|translate }}
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                                            {{ "Show in sub-category page"|translate }}
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                                            {{ "High priority in search results"|translate }}
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div class="checkmark">
+                                                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                            <button type="button" class="btn btn-sm btn-warning pull-right" translate ng-show='ad.paid_featured == true&& ad.featured_start == null && can_retry' ng-click='retry_payment()'>Retry Payment</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                                <button type="button" class="btn btn-orange btn-lg-postad pull-right" ng-click='submit()' translate ng-disabled='submitting'>Save</button>
+
+                                            </div>
+                                        </div> 
+                                        <div class="spacer-sm"></div>
+                                        </form>
+                                    </div>
+                                    <div class="col-xs-12 col-md-4" ng-show='images.length > 0 && ad.price && ad.name'>
+                                        <h4 class="margin-top-0" translate>Ad Preview</h4>
+                                       
+                                        <div class="card-wrap card-preview">
+                                            <div class="img-wrap">
+                                                <img ng-src="{{ images[0].image }}" ng-show='(images|filter:{is_cover:true}).length == 0'>
+                                                <img ng-src="{{ (images|filter:{is_cover:true})[0].image }}" ng-show='(images|filter:{is_cover:true}).length >= 1'>
+                                            </div>
+                                            <div class="caption-wrap">
+                                                <h4>{{ ad.name }}</h4>
+                                                <p>{{ ad.price }} {{ "KWD"|translate }}</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>                                                                                             
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>

@@ -1,0 +1,293 @@
+/* =============================================================================
+77car | Common Styles
+============================================================================= */
+
+/*
+1. GLOBAL STYLES
+============================================================================= */
+html,
+body{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: #F4F4F4;     
+}
+a, a:link{
+    outline: 0 !important;
+}
+
+img{max-width: 100%;}
+
+.no-border{border: 0 !important;}
+
+.filter_selected {
+    color: #45A649 !important;
+}
+
+.mx-15{
+    margin-left: 15px; margin-right: 15px;
+}
+
+/*
+2. TYPOGRAPHY
+============================================================================= */
+body{
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+}
+
+.fa{ font-family:'FontAwesome';}
+
+span.orange{color: #E24906;}
+
+a.greenlink{color: #45A649 !important;}
+
+.hr-dashed{border-top: 1px dashed gray;}
+
+/*
+3. LAYOUT 
+============================================================================= */
+section,
+nav,
+header,
+footer{
+    width: 100%;
+    float: left;
+    position: relative;
+}
+section{padding: 110px 0;}
+@media (min-width: 768px) and (max-width: 991px) { 
+      section{padding: 100px 0;}
+}
+@media (max-width: 767px) { 
+    section{padding: 90px 0;}
+}
+@media (max-width: 480px) {
+    section{padding: 80px 0;} 
+}
+
+.section-dotted-layer{
+    min-height: 400px;
+    background-color: black;
+    color: #C0C0C0;
+    background-image: url('../images/about-contact-bg.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 30px 0;
+    position: relative;
+}
+.section-dotted-layer:before{
+    content: '';
+    display: block;
+    width: 100%; height: 100%;
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background:rgba(0,0,0,0.8);
+}
+.section-dotted-layer .breadcrumb a{color:#C0C0C0;}
+.section-dotted-layer .heading-dual{
+    text-align: center;
+    padding: 30px 0;
+}
+.section-dotted-layer .heading-dual h1{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    margin: 10px;
+    color:#fff;
+}
+.section-dotted-layer .heading-dual p{
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+}
+
+
+.spacer-xxs{padding: 5px 0; height: 2px;}
+.spacer-xs{padding: 10px 0; height: 2px;}
+.spacer-sm{padding: 20px 0; height: 2px;}
+.spacer-md{padding: 30px 0; height: 2px;}
+.spacer-lg{padding: 40px 0; height: 2px;}
+
+.m0p0{margin: 0 !important; padding: 0 !important;}
+.margin-top-0{margin-top: 0;}
+
+.list-inline{margin-bottom: 0;}
+
+@media (min-width: 1200px) {
+    .text-right-lg{text-align: right;}  
+}
+
+/*
+4. Helpers
+============================================================================= */
+/* -- vertical center elements -- */
+.vertical-align {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+}
+@media (min-width: 992px) { 
+    .vertical-align-desktop {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items: center;
+    }
+}
+@media (min-width: 768px) { 
+    .vertical-align-tablet-n-up {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.flex-end{align-self: flex-end;}
+.flex-center{align-self: center;}
+.flex-stretch{align-self: stretch;}
+
+
+
+/* -- List Flex (inline list items with no spacing) -- */
+.list-flex{
+    margin: 0; padding: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    list-style: outside none none;
+}
+.list-flex li a{display: block; text-decoration: none;}
+
+/* -- Highlight-colored block list -- */
+.list-highlight-color li a .fa{
+    font-size: 16px;
+}
+.list-highlight-color li a{color: white;}
+.list-highlight-color li a:hover{
+    background-color: #008FD3;
+    color: white;
+}
+.list-highlight-color li a:hover .fa{color: white;}
+
+/* -- place element center horizontally and vertically of parent div */
+.center-absolute{
+    position: absolute;
+    left: 50%; top: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
+
+/*jumbobox*/
+.jumbobox{
+    background-color: white;
+    border: 1px solid #EBEBEB;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px #ebebeb;
+    margin: 25px auto;
+    padding: 20px !important;
+}
+
+
+/* ---- buttons ------*/
+.btn{border-radius: 3px;}
+.btn-black{
+    background-color: #212121;
+    border: 1px solid #212121;
+    color: white;
+}
+.btn-black:hover{
+    background-color: white;
+    color: #212121;
+}
+.btn-orange{
+    background-color: #4aa5ff;
+    color: white;
+}
+.btn-orange:hover{
+    color: #48A5D9;
+    background-color: white;
+    border: 1px solid #48A5D9;
+}
+.btn-wide{
+    padding: 7px 80px;
+}
+.btn-success{
+    background-color: #4aa5ff;
+    border-color: #4aa5ff;
+    color: white;
+}
+.btn-success:hover{
+    background-color: #008fd3;
+}
+.link-blue{
+    color: #4aa5ff !important;
+}
+.link-blue:hover{
+    color: #008fd3 !important;
+}
+.btn-fb{background-color: #3A5898; color: white;}
+.btn-fb:hover{background-color: #35518c; color: white;}
+
+.btn-gp{background-color: #d34200; color: white;}
+.btn-gp:hover{background-color: #000; color: white;}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 20px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-lg {
+  width: 40px;
+  height: 40px;
+  padding: 7px 9px;
+  font-size: 20px;
+  line-height: 1.30;
+  border-radius: 20px;
+}
+.btn-circle.btn-orange{border-color: #E24906;}
+
+/*--- pagination --- */
+.pagination > li > a,
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+    color: #212121;
+}
+.pagination > .active > a,
+.pagination > .active > a:focus,
+.pagination > .active > a:hover,
+.pagination > .active > span,
+.pagination > .active > span:focus,
+.pagination > .active > span:hover {
+    color: #fff;
+    background-color: #008FD3;
+    border-color: #008FD3;
+}
+/*------- form errors messages ---- */
+.red{color: red;}
+.error-red{border-color: red !important;}
+
+
+
+
+

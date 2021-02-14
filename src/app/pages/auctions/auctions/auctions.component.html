@@ -1,0 +1,103 @@
+<section class="bcrumb">
+   <div class="container">
+       <div class="row">
+           <div class="col-xs-12 hidden-xs">
+               <ol class="breadcrumb">
+                   <li><a ui-sref="root.home">{{"Home"|translate}}</a></li>
+                   <li><a href="javascript:void(0)">{{"Auctions"|translate}}</a></li>
+               </ol>
+           </div>
+       </div>
+   </div>
+</section>
+<section class="p-0" style="background-color: #f4f4f4;">
+   <div class="container">
+       <div class="row">
+           <div class="col-xs-6">
+               <h3 class="m-0 mt-5">{{"Auctions" | translate}}</h3>
+           </div>
+           <div class="col-xs-6 text-align-right">
+               <a [routerLink]="token ? '/account/my_auctions/create': '#'" class="btn btn-black"><i class="fa fa-gavel"></i> &nbsp;  {{"Add New Auction"|translate}} </a>
+           </div>
+       </div>
+   </div>
+</section>
+
+
+<!-- ================= main contents =========== -->
+<section id="maincontent">
+   <div class="container">
+       <div class="row">
+           <!-- ======== contents ========== -->
+           <div class="col-xs-12 contents">
+               <!-- the auction thumbnails -->
+               <div class="row">
+                   <div class="container-fluid">
+                       <div class="row auction-cards">
+
+                           <div *ngFor="let auction of auctions.results|limit:0:12" class="col-xs-12 col-sm-6 col-md-4 auction-single" [class]='auction.auction_processed || auction.time_in_seconds == 0 ? "auction-end": "" '> 
+                               <div class="auction-wrap">
+                                   <div class="img-wrap">
+                                       <a href='#' ng-click='redirect_product(product)'>
+                                         <img src="{{auction.cover_image}}">
+                                        </a>
+                                   </div>
+                                   <div class="caption-wrap">
+                                       <a routerLink="/auctions/{{auction.id}}"
+                                         ng-click='redirect_product(product)'><h4> {{auction.name}} </h4></a>
+                                       <div class="row mt-10">
+                                           <div class="col-xs-4">
+                                               <div class="color-light-gray" >{{"Time Left"|translate}}</div>
+                                               <div class="color-black fs-18">
+                                                   {{auction.time_in_seconds}}
+                                                   <!-- <timer countdown="product.seconds" max-time-unit="'hour'" interval="1000" finish-callback="auction_finished(product)">hours:mminutes:sseconds</timer> -->
+                                                </div>
+                                           </div>
+                                           <div class="col-xs-5">
+                                               <div class="color-light-gray" >{{"Highest Bid"|translate}}</div>
+                                               <div class="color-blue fs-18 auc-price"> {{auction.price}}  {{"KD"|translate}} </div>
+                                           </div>
+                                           <div class="col-xs-3">
+                                               <div class="color-light-gray">  {{"Bids"|translate}}  ( {{auction.bid_count}} )</div>
+                                               <div class="color-black fs-18">
+                                                   <a href="#" class="btn btn-xs btn-black" ng-click='redirect_product(product)'>{{"Bid Now"|translate}}</a>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div><!-- end each card -->
+
+                       </div>
+                   </div>
+               </div>
+               
+               <div class="spacer-xs"></div>
+               
+               <div class="row" *ngIf='auctions.results.length > 12'>
+                   <div class="col-xs-12 text-center">
+                       <button class="btn btn-primary load-page" translate ng-click='increasePage()'>load more</button>
+                   </div>
+               </div>
+               <div class="row" *ngIf='auctions.results.length == 0'>
+                   <div class="col-xs-12 text-center">
+                       <button class="btn btn-primary load-page" >{{"No Auctions Found"|translate}}</button>
+                   </div>
+               </div>
+
+               <div class="spacer-sm"></div>
+               
+               <div class="row">
+                   <div class="col-xs-12 text-center">
+                       <div class="ad-banner bg-banner">
+                            <a href=" (DATA.get('_auction_website_ads')|filter:place:8)[0].url ">
+                                <img ng-src=" (DATA.get('_auction_website_ads')|filter:place:8)[0].image ">
+                            </a>
+                       </div>
+                   </div>
+               </div>
+               
+           </div>
+       </div>
+   </div>
+</section>

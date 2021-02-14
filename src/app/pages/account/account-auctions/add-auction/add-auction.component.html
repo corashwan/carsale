@@ -1,0 +1,208 @@
+<section class="maincontent-postad">
+   <div class="container">
+       <div class="row">
+           <div class="col-xs-12 col-lg-10 col-lg-offset-1">
+               <div class="white-wrapper">
+                   <div class="container-fluid">
+                       <div class="row">
+                           <div class="col-xs-12">
+                               <ol class="breadcrumb">
+                                   <li><a routerLink="/">{{"Home"|translate}}</a></li>
+                                   <li class="active">{{"Post Your Auction"|translate}}</li>
+                               </ol>
+                           </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-xs-12">
+                               <h3>{{"Post Your Auction"|translate}}</h3>
+                               <div class="spacer-xs"></div>
+                           </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-xs-12 col-md-8">
+                               <form [formGroup]="adAuctionForm" (submit)="submitAdAuctionForm()" novalidate>
+                                   <div class="product-img text-center" ng-show='images.length < 8'>
+                                       <div class="image">
+                                           <div class="upload-logo">
+                                             <input type="file" accept="image/*" (change)="onChangeInputFile($event)">
+                                             <button class="btn btn-primary" (click)="submitAdAuctionImages()">
+                                                   {{ loading ? 'Loading .. '  : 'Upload'}}
+                                                   </button>
+                                           </div>
+                                       </div>
+                                   </div>
+
+
+                                   <div class="product-img text-center"
+                                       *ngFor="let image of uploadImages">
+                                       <div class="image">
+                                          <a href="#" ng-click="delete_image(img.id)" class="product-crose">
+                                             <img src="../../../../../assets/images/product-crose.jpg" alt="">
+                                          </a>
+                                           <img src="{{image.image }}">
+                                       </div>
+                                       <div class="radio-box">
+                                           <input type="checkbox" ng-model='img.is_cover' formControlName='is_cover'
+                                               class="checkbox-btn" id="ch$index}}"
+                                               ng-change='updateImage(img)'>
+                                           <label for="ch$index}}" class="checkbox-css">{{"Set as default"|translate}}</label>
+                                       </div>
+                                   </div>
+
+                                   <h4 translate>Auction information</h4>
+                                   <div class="row">
+                                       <div class="form-group col-xs-12">
+                                           <input id='name' type="text" ng-model='ad.name' errortip='adAuctionForm' required formControlformControlName="title"
+                                               [placeholder]="'Auction title'|translate:LangService.language" />
+                                       </div>
+                                   </div>
+                                   <div class="row">
+                                       <div class="form-group col-xs-12">
+                                           <input id='phone' type="text" ng-model='ad.phone' required
+                                               errortip='adAuctionForm' formControlformControlName='phone'
+                                               [placeholder]=" 'Phone'|translate:LangService.language + '+965xxxxxxx'"
+                                               ng-pattern='/^[+][0-9]{8,11}$/' />
+                                       </div>
+                                   </div>
+                                   <div class="row">
+                                       <div class="form-group col-xs-12 ">
+                                           <select ng-model='ad.country' formControlformControlName='country' required
+                                               errortip='adAuctionForm' id='country'>
+                                               <option value=''> {{"Select Country"|translate }}</option>
+                                               <option *ngFor='let country of countries' value='{{country.id }}'> 
+                                                  {{country.name}}
+                                               </option>
+                                           </select>
+                                       </div>
+                                   </div>
+                                   <div class="row" >
+                                       <div class="form-group col-xs-12 col-sm-6">
+                                           <input id='mileage' type="number" ng-model='ad.mileage'
+                                               errortip='adAuctionForm' formControlName='mileage'
+                                               [placeholder]="'Mileage'|translate:LangService.language" />
+                                       </div>
+                                       <div class="form-group col-xs-12 col-sm-6">
+                                           <select ng-model='ad.year' formControlName='year' 
+                                               errortip='adAuctionForm' id='year'>
+                                               <option value=''> {{"Select Year"|translate }}</option>
+                                               <option *ngFor='let year of years'
+                                                   value='{{year.id }}'> {{year.name }}
+                                               </option>
+
+                                           </select>
+                                       </div>
+                                   </div>
+                                   <div class="row" >
+                                       <div class="form-group col-xs-12 col-sm-6">
+                                           <select ng-model='ad.color_exterior' formControlName='color_exterior' 
+                                               errortip='adAuctionForm' id='color_exterior'>
+                                               <option value=''> {{"Select Color Exterior"|translate }}</option>
+                                               <option *ngFor='let exterior of carExterior'
+                                                   value='{{exterior.id }}'> {{exterior.name_en}}
+                                               </option>
+                                           </select>
+                                       </div>
+                                       <div class="form-group col-xs-12 col-sm-6">
+                                           <select ng-model='ad.color_interior' formControlName='color_interior' 
+                                               errortip='adAuctionForm' id='color_interior'>
+                                               <option value=''> {{"Select Color Interior"|translate }}</option>
+                                               <option *ngFor='let enterior of carEnterior'
+                                                   value='{{enterior.id }}'>  {{enterior.name_en}}
+                                               </option>
+
+                                           </select>
+                                       </div>
+                                   </div>
+                                   <div class="row" >
+                                       <div class="form-group col-xs-12 col-sm-6">
+                                           <select ng-model='ad.car_status' formControlName='car_status' 
+                                               errortip='adAuctionForm' id='car_status'>
+                                               <option value=''>{{"Select Status"|translate }}</option>
+                                               <option *ngFor="let status of carStatus"
+                                                   value='{{status.id }}'> {{status.name_en}}
+                                               </option>
+
+                                           </select>
+                                       </div>
+                                       <div class="form-group col-xs-12 col-sm-6">
+                                           <select ng-model='ad.car_import' formControlName='car_import' 
+                                               errortip='adAuctionForm' id='car_import'>
+                                               <option value=''> {{"Select Import"|translate }}</option>
+                                               <option *ngFor="let import of carImport"
+                                                   value='{{import.id }}'> {{import.name_en}}
+                                               </option>
+                                           </select>
+                                       </div>
+
+                                   </div>
+<!--                                            <div class="row">-->
+<!--                                                <div class="form-group col-xs-12">-->
+<!--                                                    <input id='price' type="number" step='0.1' min='0' formControlName='price'-->
+<!--                                                        errortip='adAuctionForm'  ng-model='ad.price'-->
+<!--                                                        [placeholder]=' "Starting Bid Price (KWD)"|translate:LangService.language'>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+                                   <div class="row">
+                                       <div class="form-group col-xs-12 col-sm-12">
+                                           <select ng-model='ad.car_examination' formControlName='car_examination'
+                                               errortip='adAuctionForm' id='car_examination' required>
+                                               <option value='0'> {{"Can Examine"|translate }}</option>
+                                               <option value='1'> {{"Can't Examine"|translate }}</option>
+                                           </select>
+                                       </div>
+                                   </div>
+                                   <div class="row">
+                                       <div class="form-group col-xs-12">
+                                           <textarea formControlName='description' id='description'
+                                               [placeholder]=" 'Description'|translate:LangService.language"
+                                               ng-model='ad.description' required errortip='adAuctionForm'></textarea>
+                                       </div>
+                                   </div>
+
+
+                               
+                                   <div class='row' >
+                                       <div class="form-group col-xs-12">
+                                           <div class="payment-method">
+                                               <div class="radio-inline">
+                                                   <label>
+                                                       <input ng-model='gateway' type="radio" formControlName="optionsRadios"
+                                                           ng-checked='true' value='1'>
+                                                       <img src="../../../../../assets/images/knet_icon.jpg" width="30" alt="">
+                                                   </label>
+                                               </div>
+                                               <div class="radio-inline">
+                                                   <label>
+                                                       <input ng-model='gateway' value='2' type="radio"
+                                                           formControlName="optionsRadios" >
+                                                       <img src="../../../../../assets/images/visa_icon.jpg" width="33" alt="">
+                                                   </label>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+
+                                   <div class="row">
+                                       <div class="form-group col-xs-12">
+                                           <button type="submit" class="btn btn-orange btn-lg-postad pull-right" 
+                                           [disabled]="adAuctionForm.status ==='INVALID' || adAuctionForm.pristine == true "
+                                               ng-click='submit()' ng-disabled='submitting'>{{"Proceed"|translate}}</button>
+                                       </div>
+                                   </div>
+
+                                   <div class="spacer-sm"></div>
+                                   </form>
+                               </div>
+                         
+                       
+                       </div>
+                   </div>
+
+               </div>
+           </div>
+       </div>
+   </div>
+</section>
+       <div ng-show='received'>
+<div ng-bind-html='raw_html'>
+</div>

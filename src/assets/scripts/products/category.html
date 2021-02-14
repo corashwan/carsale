@@ -1,0 +1,174 @@
+        <section class="bcrumb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 hidden-xs">
+                        <ol class="breadcrumb">
+                            <li><a ui-sref="root.home" translate>Home</a></li>
+                            <li><a href="javascript:void(0)">{{ category|localize:"name" }}</a></li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="#" class="btn btn-lg btn-default visible-xs visible-sm filter-trigger" translate>Filter Products</a>
+                        <div class="bcrumb-bar listing-filter">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-8 filters_left">
+                                                    <div class="filters_left_wrap">
+                                                        <div class="filter-single">
+                                                            <div class="btn-group">
+                                                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-show='!filter_gov'>
+                                                                {{ "Select Governorate"|translate }} &nbsp; <span class="caret"></span>
+                                                              </button>
+                                                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-show='filter_gov'>
+                                                                {{ (governorates|filter:{id:filter_gov})[0]|localize:"name"}} &nbsp; <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu">
+                                                                <li  ng-repeat='subcategory in governorates|filter:{country:country.id}|orderBy:"order"'><a href="#" ng-click='$parent.filter_gov=subcategory.id'>{{ subcategory|localize:"name" }}</a></li>
+                                                                <li><a href="#" translate  ng-click='filter_gov=undefined'>Clear Filter</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </div>
+                                                        <div class="filter-single" ng-if='category.subcategories.length > 0'>
+                                                            <div class="btn-group">
+                                                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                                                {{ "Select Subcategory"|translate }} &nbsp; <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu">
+                                                                <li  ng-repeat='subcategory in category.subcategories|orderBy:"order"'><a href="#" ng-click='redirect_subcategory(subcategory)'>{{ subcategory|localize:"name" }}</a></li>
+                                                               
+                                                              </ul>
+                                                            </div>
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-4 filters_price">
+                                                    {{ "Price range"|translate }} &nbsp; 
+                                                    <rzslider
+                                                    rz-slider-model="slider.min"
+                                                    rz-slider-high="slider.max"
+                                                    rz-slider-options="slider.options"></rzslider>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+        <!-- ================= main contents =========== -->
+        <section id="maincontent">
+            <div class="container">
+                <div class="row">
+                    <!-- ======== sidebar ========== -->
+                    <div class="col-xs-12 col-md-4 col-lg-3 sidebar hidden-md hidden-lg" >
+
+                        <a href="#" class="btn btn-lg btn-default visible-xs visible-sm cat-trigger" translate>Select a category</a>
+    
+                        <div class="cat-wrap">
+    
+                             <div class="collapse-wrap" ng-repeat='category in DATA.get("_categories")'>
+                                <div class="collapse-title no-border" collapsetoggle> {{ category|localize:"name" }}
+                                </div>
+                                <div class="collapse-detail" ng-if='category.subcategories.length > 0'>
+                                    <ul class="list-unstyled">
+                                  <li ng-repeat='subcategory in category.subcategories|orderBy:"order"'>
+                                   <a  ui-sref="root.subcategory({id:category.slug, sub_id:subcategory.slug})" ng-if='subcategory.subcategories.length == 0'>
+                                            {{ subcategory|localize:"name" }}</a>
+                                       <a class="collapsed" data-toggle="collapse" href="#collapseExample{{ subcategory.id }}" role="button" aria-expanded="false" aria-controls="collapseExample{{subcategory.id}}" ng-if='subcategory.subcategories.length > 0'>
+                                            {{ subcategory|localize:"name" }} <i class="fa fa-plus"></i>
+                                                  </a>
+                                        <div class="collapse" id="collapseExample{{subcategory.id}}" ng-if='subcategory.subcategories.length > 0'>
+                                              <div class="card card-body">
+                                              <a  ui-sref="root.sub_subcategory({id:category.slug, sub_id:subcategory.slug, sub_sub_id:sub_subcategory.slug})" ng-repeat='sub_subcategory in subcategory.subcategories'>
+                                            {{ sub_subcategory|localize:"name" }}</a>
+                                              </div>
+                                        </div>       
+                                                  
+                                    </li>
+                                    </ul>
+                                </div>
+                            </div> <!-- end each category -->
+                           
+                            <!-- google ad -->
+    
+    
+                        </div>
+                        <div class="spacer-xs"></div>
+                        <a ui-sref="root.account.create_ad"  ng-show='USER.is("loggedin")' class="btn btn-block btn-success visible-md visible-lg" translate>+ Post your ad</a>
+                        <a href="#"  ng-show='!USER.is("loggedin")' class="btn btn-block btn-success visible-md visible-lg" translate ng-click='create_ad_open()'>+ Post your ad</a>
+                        <div class="google-ad-lg">
+                                   <a href="{{ (DATA.get('_subcategory_website_ads')|filter:{place:6})[0].url }}"><img ng-src="{{ (DATA.get('_subcategory_website_ads')|filter:{place:6})[0].image }}"></a>
+                        </div>
+                        <div class="ad-banner bg-banner hidden-lg hidden-md" style="padding-bottom: 20px">
+                            <a href="{{ (DATA.get('_subcategory_website_ads')|filter:{place:6})[0].url }}"><img ng-src="{{ (DATA.get('_subcategory_website_ads')|filter:{place:6})[0].image }}"></a>
+                        </div>
+                    </div>
+                    <!-- ======== contents ========== -->
+                    <div class="col-xs-12 contents">
+                        <h3>{{ category|localize:"name" }}</h3>
+                        <br>
+                        <!-- the product thumbnails -->
+                        <div class="row">
+                            <div class="container-fluid">
+                                <div class="row product-cards">
+
+                                    <div class="col-xs-6 col-sm-4 col-md-3 card-single" ng-repeat='product in items'>
+                                    <div class="card-wrap">
+                                        <div class="img-wrap">
+                                            <a href='#'
+                                              ng-click='redirect_product(product)'><img ng-src="{{ product.first_image|resizeto:280:225 }}"></a>
+                                              <div class="date-posted-on">
+                                                {{ product.created_web|date: "dd MMMM h a"}}
+                                              </div>
+                                        </div>
+                                        <div class="caption-wrap">
+                                            <a href='#'
+                                              ng-click='redirect_product(product)'><h4>{{ product.name|description_dots:25 }}</h4></a>
+                                            <p>{{ product.price_formatted }} {{ "KD"|translate }}
+                                                <i class="fa fa-star pull-right flip" ng-mouseover='showTooltip()' data-toggle="tooltip" data-placement="left" title="Featured Ad" ng-if='!product.expired'></i>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    </div><!-- end each card -->
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="spacer-xs"></div>
+                        
+                        <div class="row" ng-show='DATA.get("_category_products").next'>
+                            <div class="col-xs-12 text-center">
+                                <button class="btn btn-primary load-page" translate ng-click='increasePage()'>load more</button>
+                            </div>
+                        </div>
+                        <div class="row" ng-show='items.length == 0'>
+                            <div class="col-xs-12 text-center">
+                                <button class="btn btn-primary load-page" translate >No Ads Found</button>
+                            </div>
+                        </div>
+
+                        <div class="spacer-sm"></div>
+                        
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <div class="ad-banner bg-banner">
+                                   <a href="{{ (DATA.get('_subcategory_website_ads')|filter:{place:7})[0].url }}"><img ng-src="{{ (DATA.get('_subcategory_website_ads')|filter:{place:7})[0].image }}"></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>

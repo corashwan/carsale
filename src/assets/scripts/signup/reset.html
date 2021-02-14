@@ -1,0 +1,52 @@
+ <section class="section-dotted-layer">
+            <div class="container">
+                
+                <div class="row">
+                    <div class="col-xs-12">
+                        <ol class="breadcrumb">
+                            <li><a ui-sref="root.home">Home</a></li>
+                            <li translate>Recover Password</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="heading-dual">
+                            <h1 translate>RECOVER PASSWORD</h1>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" name="resetForm" novalidate ng-show="step==0">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4 col-lg-offset-4">
+   
+                            <input type="password"  id='account_form_email' errortip="resetForm" name="password" ng-model="user.password" ng-minlength="8" required placeholder='{{ "New Password" }}'>
+                            <input type="password"  id='account_form_passport' errortip="resetForm" name="confirm_password" password-verify="user.password" ng-model="user.confirm_password" ng-minlength="8" required placeholder='{{ "Confirm Password" }}'>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                        <div class="gfort-recaptcha" key="recaptchakey" on-create="captcha_create(widgetId)" on-expire="captcha_expired()" on-success="captcha_response(response)" vc-recaptcha></div>
+                        </div>
+                        <div class="col-xs-12 text-center">
+
+                            <button type="submit" class="btn btn-orange btn-lg"  ng-click="submit()" ng-disabled='sending'>Recover Password</button>
+                                                
+
+                    
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                          <div class="col-xs-12 text-center">
+                            <p ng-show="step==1" translate >Your password is now changed, you can login with the new password</p>
+                            <p ng-show="step==3" ><span translate>Your reset code is invalid, please request another by clicking on</span> <a ui-sref="root.recovery" translate>Password Recover</a></p>
+                            <p ng-show="step==2"><span translate>Something went wrong, please try again by clicking on</span><a href="" ng-click="step=0" translate>Change password</a></p>
+                </div>
+            </div>
+                
+                <div class="spacer-md"></div>
+                
+            </div>
+        </section>

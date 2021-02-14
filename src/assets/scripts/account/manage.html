@@ -1,0 +1,90 @@
+        <section id="maincontent">
+            <div class="container">
+                <div class="row">
+                    <!-- ======== sidebar ========== -->
+                    <div class="col-xs-12 col-md-4 col-lg-3 sidebar">
+                        <div class="my-acc-sidebox">
+                            <div class="my-acc-photo">
+                                <h3 translate>My Account</h3>
+                                <img class='img-circle' ng-src="{{ USER.data().avatar_image.image|resizeto:180:180 }}"
+                                    ng-show="USER.data().avatar_image">
+                                <img class="img-circle" src="images/my-account/avatar.jpg"
+                                    ng-show="!USER.data().avatar_image">
+                                <h4>{{ USER.get("first_name") }} {{ USER.get("last_name") }}</h4>
+                            </div>
+                            <div class="my-acc-menu">
+                                <ul class="list-unstyled">
+                                    <li><a ui-sref="root.account" translate>Edit Profile</a></li>
+                                    <li class="active"><a href="javascript:void(0)">{{ "My Ads"|translate }}
+                                            ({{ USER.get("total_ads") }})</a></li>
+                                    <li><a ui-sref="root.account.my_auctions" translate>My Auctions</a></li>
+                                    <li><a ui-sref="root.account.favorites">{{ "Favourites"|translate }}
+                                            ({{ WISHLIST.items().length }})</a></li>
+                                    <li><a href="#" translate ng-click='logout()'>Log out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ======== contents ========== -->
+                    <div class="col-xs-12 col-md-8 col-lg-9 contents">
+                        <!-- the product thumbnails -->
+                        <div class="row">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h3 translate>My Ads</h3>
+                                        <div class="spacer-xs"></div>
+                                    </div>
+                                </div>
+                                <div class="row product-cards product-cards-my-acc my-ads">
+
+                                    <div class="col-xs-6 col-sm-4 col-md-6 col-lg-4 card-single"
+                                        ng-repeat='product in products'>
+                                        <div class="card-wrap">
+                                            <div class="img-wrap">
+                                                <a
+                                                     href='#'
+                                              ng-click='redirect_product(product)'><img
+                                                        ng-src="{{ product.first_image|resizeto:280:225 }}"></a>
+                                            </div>
+                                            <div class="caption-wrap">
+                                                <a
+                                                     href='#'
+                                              ng-click='redirect_product(product)'>
+                                                    <h4>{{ product.name }}</h4>
+                                                </a>
+                                                <p>{{ product.price_formatted }} {{ "KWD"|translate }}</p>
+                                            </div>
+                                            <div class="action-buttons">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-xs-6 text-center border-right">
+                                                            <div class="row"><a
+                                                                    ui-sref="root.account.edit_ad({id:product.id})"><i
+                                                                        class="fa fa-edit"></i>
+                                                                    {{ "Edit"| translate }}</a></div>
+                                                        </div>
+                                                        <div class="col-xs-6 text-center">
+                                                            <div class="row"><a href="#"
+                                                                    ng-click='delete_ad(product)'><i
+                                                                        class="fa fa-close"></i>
+                                                                    {{ "Delete"|translate }}</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end each card -->
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="spacer-xs"></div>
+
+                    </div>
+                </div>
+            </div>
+        </section>

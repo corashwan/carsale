@@ -1,0 +1,6 @@
+{
+   "http://45.55.54.157/api/*": {
+       "secure": false,
+       "logLevel": "debug"
+   }
+}

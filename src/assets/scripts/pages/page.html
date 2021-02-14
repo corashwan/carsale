@@ -1,0 +1,30 @@
+<section class="section-dotted-layer">
+            <div class="container">
+                
+                <div class="row">
+                    <div class="col-xs-12">
+                        <ol class="breadcrumb">
+                            <li><a ui-sref="root.home" translate>Home</a></li>
+                            <li>{{ page| localize:"page_title" }}</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="heading-dual">
+                            <h1>{{ page| localize:"page_title" }}</h1>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="transparent-box about-box" ng-bind-html='deliberatelyTrustDangerousSnippet(page| localize:"description"|srcfix)'>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="spacer-lg"></div>
+                
+            </div>
+        </section>

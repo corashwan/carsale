@@ -1,0 +1,351 @@
+    <section id="section-topbar" class="hide-print">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6 lang-div">
+                    <ul class="list-highlight-color list-flex">
+                        <li><button class="btn" ng-click="change_language()">{{ LANGUAGE.get_current_code() }}</button>
+                        </li>
+                        <!-- <li>
+                            <select name='form-control' ng-model="country" name='country'
+                                ng-change='change_country(country)'>
+
+                                <option ng-repeat='country in DATA.get("_countries")|orderBy:"order"'
+                                    ng-value='country'>{{
+                                    country|localize:"name" }}</option>
+                            </select>
+
+                        </li> -->
+                        <li class="header-lang-btn"> 
+                            <a href="#" class="ng-binding">{{ country|localize:"name" }} <i class="fa fa-angle-down"></i></a>
+                            <nav class="header-language-menu">
+                                <ul>
+                                    <li ng-repeat='country in DATA.get("_countries")|orderBy:"order"'
+                                    ><a href="#" ng-click='$parent.change_country(country)'>{{
+                                            country|localize:"name" }}</a></li>
+                                </ul>
+                            </nav><!-- /End Header Language Menu -->
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 topbar-menu">
+                    <ul class="list-highlight-color list-flex">
+                        <li ng-if="!USER.is('loggedin')"><a href="#" translate ng-click='open_login()' data-toggle="modal" data-target="#modal-reg-login">Sign In</a></li>
+                        <li ng-if="!USER.is('loggedin')"><a href="#" ng-click='open_registration()' translate data-toggle="modal" data-target="#modal-reg-login">Sign
+                                Up</a></li>
+                        <li ng-if='USER.is("loggedin")'>
+                            <div class="btn-group">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">{{ "My Account"|translate }} <i
+                                        class="fa fa-angle-down"></i></a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a ui-sref="root.account" translate>View profile</a></li>
+                                    <li><a ui-sref="root.account.ads" translate>My Advertisements</a></li>
+                                    <li><a ui-sref="root.account.my_auctions" translate>My Auctions</a></li>
+                                    <li><a ui-sref="root.account.create_auction" translate>Create Auction</a></li>
+                                    <li><a ui-sref="root.account.favorites" translate>Favorites</a></li>
+                                    <li><a href="#" translate ng-click='logout()'>Log out</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="visible-xs">
+                            <div class="hide-print">
+                                <a href="#" data-toggle="modal" data-target="#searchmodal"><i class="fa fa-search"></i></a>
+                            </div>
+                        </li>
+                        <li class="hidden-xs"><a ui-sref="root.contact" >{{ "Help"|translate }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- modal Registration/Login -->
+    <div class="modal fade sign-in-up" id="sign-in-up" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div ng-show="IsEnterPhoneVisible" class="step-enterPhone">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="text-center modal-title" translate>Enter Phone Number</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="spacer-xxs"></div>
+                                    <div translate>77car will send you SMS message to verify your phone number</div>
+                                    <div class="spacer-xxs"></div>
+                                    <form>
+                                        <div class="phone-verify-number">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="input-group noflip">
+                                                      <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ selected_prefix }} <span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#" ng-click='selected_prefix="965"'>+965 - {{ "Kuwait"|translate }}</a></li>
+                                                        </ul>
+                                                      </div><!-- /btn-group -->
+                                                      <input ng-model='login_phone' type="text" class="form-control" aria-label="...">
+                                                    </div><!-- /input-group -->
+                                                </div><!-- row end -->
+                                                <div class="row">
+                                                    <button type="submit" ng-click="open_verificationForm()" class="btn btn-success btn-block" translate>Send SMS</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end step-enterPhone -->
+                <div ng-show="IsVeriFormVisible" class="step-enterVerificationCode">
+                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="text-center modal-title" translate>Verify Phone Number</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12">
+
+                                    <div class="spacer-xxs"></div>
+                                    <div translate>Check your SMS and put the code you received below</div>
+                                    <div class="spacer-xxs"></div>
+                                    <form>
+                                        <div class="phone-verify-digits">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-xs-2">
+                                                        <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" ng-model='code_one' class='inputs'/>
+                                                    </div>
+                                                    <div class="col-xs-2">
+                                                        <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" ng-model='code_two' class='inputs'/>
+                                                    </div>
+                                                    <div class="col-xs-2">
+                                                        <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" ng-model='code_three' class='inputs'/>
+                                                    </div>
+                                                    <div class="col-xs-2">
+                                                        <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" ng-model='code_four' class='inputs'/>
+                                                    </div>
+                                                    <div class="col-xs-2">
+                                                        <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" ng-model='code_five' class='inputs'/>
+                                                    </div>
+                                                    <div class="col-xs-2">
+                                                        <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" ng-model='code_six'  class='inputs'/>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <p class="digit" translate>Enter 6 digit code</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" ng-click="close_verificationForm()" class="btn btn-success btn-block" translate>Verify and Continue</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="spacer-xs"></div>
+                                    <p ng-show='sms_available'>{{ "Code not received ?"|translate }} <a href="#" translate  ng-click="resend()">Resend SMS</a></p>
+                                    <p><a href="#" ng-click='IsVeriFormVisible=false;IsEnterPhoneVisible=true' translate>Try another number</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end step-enterVerificationCode -->
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ========== header ========== -->
+    <div class="header-holder hidden-xs hide-print">
+        <section id="header" class="hidden-xs">
+            <div class="container">
+                <div class="row vertical-align">
+                    <div class="col-xs-3 col-md-2 col-lg-2">
+                        <div class="logo">
+                            <a ui-sref="root.home"><img src="../../images/logo.png"></a>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-md-6 col-md-offset-1 col-lg-5 col-lg-offset-1 searchbox">
+                        <form ng-submit='search()'>
+                            <div class="input-group">
+                                <input type="text" class="form-control"
+                                    placeholder="{{ 'search in listing'|translate }}" aria-label="..." ng-model='q'
+                                    autocomplete="off">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false" ng-show='!search_category'>{{ "Select a category"|translate }} <span class="caret"></span></button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"
+                                        ng-show='search_category'>{{ search_category|localize:"name" }}<span
+                                            class="caret"></span></button>
+                                    <ul class="dropdown-menu ">
+                                        <li ng-repeat='category in DATA.get("_categories")|orderBy:"order"'><a href="#"
+                                                ng-click='$parent.search_category=category'>{{ category|localize:"name" }}</a>
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-default" type="submit"> &nbsp; <img src="images/search.png">
+                                        &nbsp; </button>
+                                </div><!-- /btn-group -->
+
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="hidden-sm hidden-md col-lg-2 downloadapps text-center hide-print">
+                        <strong translate>Download apps</strong>
+                        <ul class="list-inline">
+                            <li><a href="{{ DATA.get('_mobile_links').ios_url }}"><img src="images/appstore.png"
+                                        style="margin-top: -6px;"> iOS</a></li>
+                            <li><a href="{{ DATA.get('_mobile_links').android_url }}"><img src="images/playstore.png"
+                                        style="margin-top: -6px;"> Android</a></li>
+                        </ul>
+                    </div> -->
+                    <div class="col-xs-3 col-md-5 col-lg-4 text-right flip hide-print post-ad"  ng-show='USER.is("loggedin")'>
+                        <ul class="list-inline">
+                            <li><a ui-sref="root.auctions" class="btn btn-success btn-black-outline" translate><i class="fa fa-gavel"></i> &nbsp; {{ "Auctions"|translate }}</a></li>
+                            <li ><a ui-sref="root.account.create_ad" class="btn btn-success" translate>+ Post your ad</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-3 col-md-5 col-lg-4 text-right flip hide-print"  ng-show='!USER.is("loggedin")'>
+                        <ul class="list-inline">
+                            <li><a ui-sref="root.auctions" class="btn btn-success btn-black-outline" translate><i class="fa fa-gavel"></i> &nbsp; {{ "Auctions"|translate }}</a></li>
+                            <li ><a href="#" class="btn btn-success" translate  ng-click='create_ad_open()'>+ Post your ad</a></li>
+                        </ul>
+                    </div>                    
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- header mobile -->
+    <div class="header-m-holder visible-xs">
+        <section id="header-mobile" class="visible-xs hide-print">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 header-m">
+                       
+                        <a ui-sref="root.home"><img src="../../images/logo.png"></a>
+                        
+                    </div>
+                </div>
+                <div class="row post-ad-mobile hide-print" ng-show='USER.is("loggedin")'>
+                    <div class="col-xs-12 mb-10">
+                        <a ui-sref="root.auctions" class="btn btn-success btn-black-outline btn-block" translate><i class="fa fa-gavel"></i> &nbsp; Auctions</a>
+                    </div>
+                    <div class="col-xs-12">
+                        <a ui-sref="root.account.create_ad" class="btn btn-success btn-block" translate>+ Post your ad</a>
+                    </div>
+                </div>
+                <div class="row post-ad-mobile hide-print" ng-show='!USER.is("loggedin")'>
+                    <div class="col-xs-12 mb-10">
+                        <a ui-sref="root.auctions" class="btn btn-success btn-black-outline btn-block" translate><i class="fa fa-gavel"></i> &nbsp; Auctions</a>
+                    </div>
+                    <div class="col-xs-12">
+                        <a href="#" class="btn btn-success btn-block" ng-click='create_ad_open()' translate>+ Post your ad</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal for searchbox in mobile -->
+    <div class="modal fade" id="searchmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body searchbox">
+                    <form ng-submit='search()'>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{{ 'search in listing'|translate }}"
+                                aria-label="..." ng-model='q' autocomplete="off">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" ng-show='!search_category'>{{ "Select a
+                                    category"|translate }} <span class="caret"></span></button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" ng-show='search_category'>{{ search_category|localize:"name" }} <span class="caret"></span></button>
+                                <ul class="dropdown-menu ">
+                                    <li ng-repeat='category in DATA.get("_categories")|orderBy:"order"'><a href="#"
+                                            ng-click='$parent.search_category=category'>{{ category|localize:"name" }}</a>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-default" type="submit"> &nbsp; <i class="fa fa-search"></i>
+                                    &nbsp;
+                                </button>
+                            </div><!-- /btn-group -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ============ Menubar ; visible only in desktops ======== -->
+      <section class="menubar visible-md visible-lg">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="menuwrap">
+                <ul class="list-inline list-menu">
+                  <li ng-repeat='category in DATA.get("_categories")|limitTo:10'>
+                      <a ui-sref="root.category({id:category.slug})">{{ category|localize:"name" }} <i class="fa fa-angle-down" ng-if='category.subcategories.length > 0'></i></a>
+                      <div class="dropdown-wrap" ng-if='category.subcategories.length > 0'>
+                          <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-xs-2" ng-repeat='subcategory in category.subcategories|limitTo:5|orderBy:"order"'>
+                                      <ul class="list-unstyled list-submenu">
+                                          <li><a ui-sref="root.subcategory({id:category.slug, sub_id:subcategory.slug})">{{ subcategory|localize:"name" }}</a></li>
+                                          <li ng-repeat='sub_subcategory in subcategory.subcategories|limitTo:5'><a ui-sref="root.sub_subcategory({id:category.slug, sub_id:subcategory.slug, sub_sub_id:sub_subcategory.slug})">{{ sub_subcategory|localize:"name" }}</a></li>
+                                          <li ng-if='subcategory.subcategories.length > 5'><a ui-sref="root.subcategory({id:category.slug, sub_id:subcategory.slug})" translate>Others</a></li>
+                                      </ul> 
+                                </div>
+                                <div class="col-xs-2" ng-ifng-repeat='category.subcategories.length > 5'>
+                                      <ul class="list-unstyled list-submenu">
+                                          <li><a ui-sref="root.category({id:category.slug})" translate>Others</a></li>
+                                      </ul> 
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                </li>
+                <li ng-if='DATA.get("_categories").length > 10'>
+                      <a href='javacript:void(0)' ng-click='$parent.show_more_categories()'>...</a>
+                </li>
+                  <li ng-repeat='category in DATA.get("_categories")|limitTo:10:10' ng-show='show_more'>
+                      <a ui-sref="root.category({id:category.slug})">{{ category|localize:"name" }} <i class="fa fa-angle-down" ng-if='category.subcategories.length > 0'></i></a>
+                      <div class="dropdown-wrap" ng-if='category.subcategories.length > 0'>
+                          <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-xs-2" ng-repeat='subcategory in category.subcategories|limitTo:5|orderBy:"order"'>
+                                      <ul class="list-unstyled list-submenu">
+                                          <li><a ui-sref="root.subcategory({id:category.slug, sub_id:subcategory.slug})">{{ subcategory|localize:"name" }}</a></li>
+                                          <li ng-repeat='sub_subcategory in subcategory.subcategories|limitTo:5'><a ui-sref="root.sub_subcategory({id:category.slug, sub_id:subcategory.slug, sub_sub_id:sub_subcategory.slug})">{{ sub_subcategory|localize:"name" }}</a></li>
+                                          <li ng-if='subcategory.subcategories.length > 5'><a ui-sref="root.subcategory({id:category.slug, sub_id:subcategory.slug})" translate>Others</a></li>
+                                      </ul> 
+                                </div>
+                                <div class="col-xs-2" ng-ifng-repeat='category.subcategories.length > 5'>
+                                      <ul class="list-unstyled list-submenu">
+                                          <li><a ui-sref="root.category({id:category.slug})" translate>Others</a></li>
+                                      </ul> 
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> <!-- end menubar -->

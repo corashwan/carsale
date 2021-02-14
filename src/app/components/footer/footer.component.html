@@ -1,0 +1,113 @@
+<div class="footer-top hide-print" footeraccordion>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-2">
+                <div class="acc-wrap acc-detail-open-default">
+                    <div class="acc-title">{{'Browse Category' | translate}} </div>
+                    <div class="acc-detail">
+                        <ul class="list-unstyled">
+                            <li *ngFor="let category of categories| limit:0:3">
+                                <a routerLink="/category/{{category.slug}})"> {{category.name}} </a>
+                            </li>
+                            <li><a ui-sref="root.category({id:DATA.get('_categories')[0].slug})"
+                                    class="link-blue">{{'More' | translate}}</a></li>
+                        </ul>
+                    </div>
+                </div> <!-- end each accordion item -->
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-2">
+                <div class="acc-wrap acc-detail-open-default">
+                    <div class="acc-title">{{'Important Links' | translate}}</div>
+                    <div class="acc-detail">
+                        <ul class="list-unstyled">
+                            <li><a routerLink="/terms" routerLinkActive="active"> {{'Terms & Conditions' | translate}}
+                                </a></li>
+                            <li><a routerLink="/privacy-policy" routerLinkActive="active">{{'Privacy Policy' |
+                                    translate}}</a></li>
+                            <li><a routerLink="/faqs" routerLinkActive="active">{{"FAQ's" | translate}} </a></li>
+                        </ul>
+                    </div>
+                </div> <!-- end each accordion item -->
+            </div>
+
+            <div class="col-xs-12 col-sm-4 col-md-2">
+                <div class="acc-wrap acc-detail-open-default">
+                    <div class="acc-title">{{'Quick Links' | translate}}</div>
+                    <div class="acc-detail">
+                        <ul class="list-unstyled">
+                            <li><a routerLink="/about" routerLinkActive="active">{{'About Us' | translate}} </a></li>
+                            <li><a routerLink="/contact-us" routerLinkActive="active">{{'Contact Us' | translate}}</a>
+                            </li>
+                            <li><a routerLink="/advertise-with-us" routerLinkActive="active">{{'Advertise with us' |
+                                    translate}}</a></li>
+                        </ul>
+                    </div>
+                </div> <!-- end each accordion item -->
+            </div>
+            <div class="clearfix visible-sm"></div>
+            <div class="col-xs-12 col-sm-4 col-md-2">
+                <div class="acc-wrap acc-detail-open-default">
+                    <div class="acc-title">{{'Download Apps' | translate}}</div>
+                    <div class="acc-detail">
+                        <ul class="list-unstyled">
+                            <li><a [href]=" social.ios_url" target="_blank"><img
+                                        src="../../../assets/images/appstore-white.png" style="margin-top: -6px;">
+                                    iOS</a></li>
+                            <li><a [href]="social.android_url" target="_blank"><img
+                                        src="../../../assets/images/playstore.png" style="margin-top: -6px;">
+                                    Android</a></li>
+                        </ul>
+                    </div>
+                </div> <!-- end each accordion item -->
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-4">
+                <div class="acc-wrap acc-detail-open-default">
+                    <div class="acc-title">{{'Stay Updated' | translate}}</div>
+                    <div class="acc-detail">
+                        <app-newsletter></app-newsletter>
+                    </div>
+                </div> <!-- end each accordion item -->
+
+                <div class="spacer-xs hidden-xs"></div>
+
+                <div class="acc-wrap acc-detail-open-default">
+                    <div class="acc-title">{{'Social Media' | translate}}</div>
+                    <div class="acc-detail">
+                        <ul class="list-inline footer-social">
+                            <li>
+                                <a href="{{social.instagram}}" target='_blank'>
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{social.snapchat}}" target='_blank'>
+                                    <i class="fa fa-snapchat"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{social.twitter}}" target='_blank'>
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{social.facebook}}" target='_blank'>
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> <!-- end each accordion item -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="copyright">
+                    <p class="text-center">
+                        {{social.copyright}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

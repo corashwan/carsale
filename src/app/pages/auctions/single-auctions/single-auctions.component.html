@@ -1,0 +1,363 @@
+<section class="bcrumb hide-print">
+   <div class="container">
+       <div class="row">
+           <div class="col-xs-12">
+               <div class="bcrumb-bar">
+                   <div class="row">
+                       <div class="col-xs-12 col-lg-12 hidden-xs">
+                           <ol class="breadcrumb">
+                               <li><a routerLink="/">{{"Home"|translate}}</a></li>
+                               <li><a routerLink="/auctions">{{"Auctions"|translate}}</a>
+                               </li>
+                               <li class="active"> {{auction.name}} </li>
+                           </ol>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <div class="row vertical-align-desktop backrow">
+
+           <div class="col-xs-12 col-lg-6">
+                <a routerLink="/auctions" class="btn btn-black" > 
+                   <i class="fa fa-angle-left"></i> 
+                   <!-- {{"Back"|translate}} -->
+                </a><!--   "Back"|translate  -->
+
+               <h3 class="product-name"> {{auction.name}}</h3>
+           </div>
+
+           <div class="col-xs-12 col-lg-6 text-right-lg sh-pr">
+               <ul class="list-inline">
+                   <li><a href="#"><i class="fa fa-eye"></i>  {{auction.views}} {{"View"|translate}} </a></li>
+                   <li class="share-icons">
+                       <div class="dropdown">
+                           <button class="btn btn-secondary dropdown-toggle" type="button"
+                               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                               <i class="fa fa-share"></i>  {{"Share"|translate}}
+                           </button>
+                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                               <a href socialshare socialshare-provider="facebook"
+                                   socialshare-redirect-uri=" product.share_url "
+                                   socialshare-url=" product.share_url " title="Facebook"
+                                   class='dropdown-item'>
+                                   <i class="fa fa-facebook"></i> facebook
+
+                               </a>
+                               <a href socialshare socialshare-provider="twitter"
+                                   socialshare-text=" product.name "
+                                   socialshare-url=" product.share_url " title="Twitter"
+                                   class='dropdown-item'>
+                                   <i class="fa fa-twitter" aria-hidden="true"></i> twitter
+
+                               </a>
+                               <a href='#' socialshare socialshare-provider="email"
+                                   socialshare-subject="77Car Auction"
+                                   socialshare-body=' product.share_url ' title="email"
+                                   class='dropdown-item'>
+                                   <i class="fa fa-envelope"></i> email
+
+                               </a>
+                           </div>
+                       </div>
+                   </li>
+                   <li><button class="btn print-btn"><i class="fa fa-print"></i> {{"Print"|translate}} </button></li>
+               </ul>
+           </div>
+       </div>
+   </div>
+</section>
+
+
+
+
+<!-- main contents -->
+<section id="maincontent">
+   <div class="container">
+       <div class="row row-auction-detail-page">
+
+           <!-- ======== contents ========== -->
+           <div class="col-xs-12 col-md-12 col-lg-7 contents">
+
+               <div class="row ">
+                   <div class="col-xs-12">
+                       <div class="pr-detail-slider" ng-class='"pr-detail-slider":true, "auction-end-slider": product.auction_processed || product.seconds == 0'>
+                           <div class="watermark"> {{auction.created_at|date:"y"}} </div>
+                           <!-- ================== slider ================ -->
+                           <div class="rs-wrap-hdr-8">
+                               <!-- START REVOLUTION SLIDER 5.0 -->
+                               <div class="rev_slider_wrapper hide-print">
+                                   <div id="slider-hdr-8" class="rev_slider" data-version="5.0">
+                                       <ul>
+                                           <li data-transition="fade" data-thumb=" image.image "
+                                               *ngFor='let image of auction.images'>
+                                               <img src="{{image.image}}" alt="" width="720px" height="500px">
+                                           </li>
+                                       </ul>
+
+                                   </div><!-- END REVOLUTION SLIDER -->
+                               </div><!-- END OF SLIDER WRAPPER -->
+                              
+                           </div>
+                           <img ng-src=" product.first_image " class="img-print">
+                       </div>
+                   </div>
+               </div>
+
+           </div>
+
+
+           <!-- ======== sidebar ========== -->
+           <div class="col-xs-12 col-md-12 col-lg-5 sidebar-right hide-print">
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3 class="m-0"> {{auction.name}}   ({{auction.examine_status}})</h3>
+                </div>
+              </div>
+              <div class="row mt-20">
+                <div class="col-xs-12 col-md-5">
+                  <!-- <span class="color-light-gray"> "Time Left"|translate : </span> <span class="color-black fs-20"><timer countdown="product.seconds" max-time-unit="'hour'" interval="1000" finish-callback="auction_finished(product)" ng-if='product'>hours:mminutes:sseconds</timer></span> -->
+                </div>
+                <div class="col-xs-12 col-md-7 mt-5">
+                  <span class="color-light-gray fs-13"> {{"End in"|translate}} :  {{auction.end_date|date:"dd/MM/yyyy hh:mm a"}} </span>
+                </div>
+              </div>
+              <div class="row mt-20 auction-detail-bid-input-wrap">
+                <div class="col-xs-12">
+                  <table>
+                    <tr>
+                        <td> {{"Highest Bid"|translate}} : </td> 
+                        <td> 
+                            <span class="color-blue fs-20 price"> {{auction.last_bid_amount}} {{"KD"|translate}} </span> 
+                            <a href="#" class="bids" data-target="#bids-history-modal" data-toggle="modal" ng-click='load_bidders()'> {{"bids"|translate}} ({{auction.bid_count}})</a>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td *ngIf="token || auction.auction_processed == true">
+
+                        <input type="number" min=' get_min_price() ' class="bid-input" ng-model='bid_amount'> 
+                            <a class="btn btn-sm btn-black" translate ng-click='place_bid()'>
+                                place bid
+                            </a>
+                        <br>
+                        <span class="fs-13"> {{"Min. 20 KD"|translate}} </span>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row mt-20">
+                   <div class="col-xs-12">
+                       <div>
+                           <div class="row">
+                               <div class="col-xs-12 col-lg-5">
+                                   <span > {{"Posted on"|translate}} : &nbsp; </span> <i class="fa fa-calendar"></i>
+                                    {{auction.created_at|date:"dd/MM/y"}}  &nbsp; &nbsp; <i class="fa fa-clock-o"></i>
+                                    {{auction.created_at|date:"hh:mm a"}}
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-xs-12">
+                                   <hr class="hr-dashed">
+                               </div>
+                           </div>
+                           <div class="row" ng-show='product.mileage || product.year || product.color_exterior || product.color_interior || product.car_status || product.car_import'>
+                               <div class="col-xs-12">
+                                   <h4>{{"Specifications"|translate}}</h4>
+                                   <table class="table table-striped">
+                                       <tr ng-if='product.mileage' ng-if='product.mileage'>
+                                           <td>{{"Mileage"|translate}}</td> <td> {{auction.mileage}} </td>
+                                       </tr>
+                                       <tr ng-if='product.year'>
+                                           <td>{{"Year"|translate}}</td> <td> {{auction.year}} </td>
+                                       </tr>
+                                       <tr ng-if='product.color_exterior'>
+                                           <td>{{"Color Exterior"|translate}}</td> <td> {{auction.color_exterior}} </td>
+                                       </tr>
+                                       <tr ng-if='product.color_interior'>
+                                           <td>{{"Color Interior"|translate}}</td> <td> {{auction.color_interior}} </td>
+                                       </tr>
+                                       <tr ng-if='product.car_status'>
+                                           <td>{{"Car Status"|translate}}</td> <td> {{auction.car_status}} </td>
+                                       </tr>
+                                       <tr ng-if='product.car_import'>
+                                           <td>{{"Import"|translate}}</td> <td> {{auction.car_import}} </td>
+                                       </tr>
+                                   </table>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-xs-12">
+                                   <h4>{{"Description"|translate}}</h4>
+                                  <p> {{auction.description}} </p>
+                               </div>
+                           </div>
+                           
+                           <div class="row">
+                               <div class="col-xs-12">
+                                   <hr class="hr-dashed">
+                               </div>
+                           </div>
+                           <div class="row" ng-if='product.user_socials.facebook || product.user_socials.twitter || product.user_socials.snapchat || product.user_socials.youtube || product.user_socials.sms || product.user_socials.social_email'>
+                               <div class="col-xs-12">
+                                   <ul class="list-inline">
+                                     <li> {{"Visit seller at"|translate}} :</li> 
+                                     <li ng-if='product.user_socials.facebook'><a href=" product.user_socials.facebook " target="_blank"><i class="fa fa-facebook-official fa-lg"></i></a></li>
+                                     <li ng-if='product.user_socials.twitter'><a href=" product.user_socials.twitter " target="_blank"><i class="fa fa-twitter fa-lg"></i></a></li>
+                                     <li ng-if='product.user_socials.youtube'><a href=" product.user_socials.youtube " target="_blank"><i class="fa fa-youtube fa-lg"></i></a></li>
+                                     <li ng-if='product.user_socials.snapchat'><a href=" product.user_socials.snapchat " target='_blank'><i class="fa fa-snapchat fa-lg"></i></a></li>
+                                     <li ng-if='product.user_socials.sms'><a href="https://api.whatsapp.com/send?phone= product.user_socials.sms &text=Hi,%20I%20contacted%20you%20Through%2077Car%20website." target='_blank'><i class="fa fa-whatsapp fa-lg"></i></a></li>
+                                     <li ng-if='product.user_socials.social_email'><a href="#" socialshare-subject="77Car Advertisement" socialshare socialshare-provider="email" socialshare-to=" product.user_socials.social_email "><i class="fa fa-envelope fa-lg"></i></a></li>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+
+           </div>
+
+       </div>
+
+   </div>
+</section>
+<!-- <script>
+   $('.print-btn').on('click', function () 
+       var printBlock = $(".hide-print");
+       printBlock.hide();
+       window.print();
+       printBlock.show();
+   );
+</script> -->
+
+
+
+<section class="p-0 mb-100" *ngIf='similar.length > 0' style="background-color: #f4f4f4;">
+ <div class="container">
+   <div class="row">
+     <div class="col-xs-12">
+       <h3>{{"Similar Auctions"|translate}}</h3>
+     </div>
+   </div>
+   <div class="row">
+      <div class="container-fluid">
+          <div class="row auction-cards">
+
+              <div *ngFor="let similarAuc of similar|limit:0:3" class="col-xs-12 col-sm-6 col-md-4 auction-single" [class]='similarAuc.auction_processed || similarAuc.time_in_seconds == 0 ? "auction-end": "" '>
+                  <div class="auction-wrap">
+                      <div class="img-wrap">
+                            <a href='#' ng-click='redirect_product(ad)'>
+                                <img src="{{similarAuc.cover_image}}">
+                            </a>
+                      </div>
+                      <div class="caption-wrap">
+                          <a href='#'
+                            ng-click='redirect_product(ad)'><h4>{{similarAuc.name}}</h4></a>
+                          <div class="row mt-10">
+                              <div class="col-xs-4">
+                                  <div class="color-light-gray">{{"Time Left"|translate}}</div>
+                                  <!-- <div class="color-black fs-18"><timer countdown="ad.seconds" max-time-unit="'hour'" interval="1000" finish-callback="auction_finished(product)">hours:mminutes:sseconds</timer></div> -->
+                              </div>
+                              <div class="col-xs-5">
+                                  <div class="color-light-gray">{{"Highest Bid"|translate}}</div>
+                                  <div class="color-blue fs-18 auc-price">{{similarAuc.price}}   {{"KD"|translate}} </div>
+                              </div>
+                              <div class="col-xs-3">
+                                  <div class="color-light-gray">{{"Bids"|translate}} ({{similarAuc.bid_count}})</div>
+                                  <div class="color-black fs-18">
+                                      <a href="#" class="btn btn-xs btn-black" ng-click='redirect_product(ad)'>{{"Bid Now"|translate}}</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div><!-- end each card -->
+          </div>
+      </div>
+  </div>
+ </div>
+</section>
+
+
+<!-- =========== Bids History modal =============== -->
+<div class="modal fade" id="bids-history-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h6 class="modal-title mt-20">{{"Bids History"|translate}}</h6>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-condensed table-striped table-bid-history">
+                                <tr>
+                                    <td>{{"Bidder"|translate}}</td> <td>{{"Amount"|translate}}</td> <td>{{"Time"|translate}}</td>
+                                </tr>
+                                <tr ng-repeat='bid in bidders'>
+                                    <td> bid.bidder </td> <td> bid.amount   {{"KD"|translate}} </td> <td> bid.created_web|date:"d MMM y"   {{"at"|translate}}   bid.created_web|date:"hh:mm:ss a"</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show='DATA.get("_bidders").next'>
+                    <div class="col-xs-12 text-center">
+                        <button class="btn btn-primary load-page" ng-click='increasePage()'>{{"load more"|translate}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- =========== bid pay modal =============== -->
+<div class="modal fade" id="bid-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h6 class="text-center modal-title mt-20" translate>Dear Customer</h6>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                    <p > {{"For bidding and participating in auction you need to pay"|translate}}   priceSettings.bidding_price   {{"KD"|translate}}   {{"to be able to bid and participating in all auctions for"|translate}}   priceSettings.bidding_period   {{"h"|translate}} </p>
+
+                    <div class="form-group col-xs-12">
+                        <div class="payment-method">
+                            <div class="radio-inline">
+                                <label>
+                                    <input ng-model='gateway' type="radio" name="optionsRadios"
+                                        ng-checked='true' value='0'>
+                                    <img src="../../images/knet_icon.jpg" width="30" alt="">
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input ng-model='gateway' value='1' type="radio"
+                                        name="optionsRadios" >
+                                    <img src="../../images/visa_icon.jpg" width="33" alt="">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+                <div class="row mt-10 mb-10">
+                    <div class="col-xs-12 text-center">
+                        <ul class="list-inline">
+                            <li><a class="btn btn-gray btn-block" data-dismiss="modal">{{"Close"|translate}}</a></li>
+                            <li><a class="btn btn-green btn-block" ng-click='bid_payment()' data-dismiss="modal">{{"Pay"|translate}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

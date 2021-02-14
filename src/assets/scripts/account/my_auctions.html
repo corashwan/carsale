@@ -1,0 +1,156 @@
+        <section id="maincontent">
+            <div class="container">
+                <div class="row">
+                    <!-- ======== sidebar ========== -->
+                    <div class="col-xs-12 col-md-4 col-lg-3 sidebar">                       
+                        <div class="my-acc-sidebox">
+                            <div class="my-acc-photo">
+                                <h3 translate>My Account</h3>
+                                <img class='img-circle' ng-src="{{ USER.data().avatar_image.image|resizeto:180:180 }}" ng-show="USER.data().avatar_image">
+                                <img class="img-circle" src="images/my-account/avatar.jpg" ng-show="!USER.data().avatar_image">
+                                <h4>{{ USER.get("first_name") }} {{ USER.get("last_name") }}</h4>
+                            </div>
+                            <div class="my-acc-menu">
+                                <ul class="list-unstyled">
+                                    <li><a ui-sref="root.account" translate>Edit Profile</a></li>
+                                    <li><a ui-sref="root.account.ads">{{ "My Ads"|translate }} ({{ USER.get("total_ads") }})</a></li>
+                                    <li class="active"><a ui-sref="root.account.my_auctions" translate>My Auctions</a></li>
+                                    <li ><a ui-sref="root.account.favorites">{{ "Favourites"|translate }} ({{ WISHLIST.items().length }})</a></li>
+                                    <li><a href="#" translate ng-click='logout()'>Log out</a></li>
+                                </ul>
+                            </div>
+                        </div>                        
+                    </div>
+                    
+                    <!-- ======== contents ========== -->
+                    <div class="col-xs-12 col-md-8 col-lg-9 contents">
+                        <!-- the product thumbnails -->
+                        <div class="row">
+                            <div class="container-fluid">
+                                <!--<div class="row">
+                                    <div class="col-xs-12">
+                                        <h3 translate>My Auctions</h3>
+                                        <div class="spacer-xs"></div>
+                                    </div>
+                                </div>-->
+                                
+                                <!-- ==========  bootstrap tab ======= -->
+                                <div class="my-auction-tabs">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs" role="tablist">
+                                      <li role="presentation" class="active"><a href="#myAuctions" aria-controls="myAuctions" role="tab" data-toggle="tab" translate>My Auctions</a></li>
+                                      <li role="presentation"><a href="#myBids" aria-controls="myBids" role="tab" data-toggle="tab" translate>My Bids</a></li>
+                                    </ul>
+
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                      <!-- my auctions -->
+                                      <div role="tabpanel" class="tab-pane fade in active" id="myAuctions">
+                                        <div class="row auction-cards">
+                                            <div class="col-xs-12 col-sm-6 col-md-6 auction-single"  ng-repeat='product in products' ng-class='{"col-xs-12 col-sm-6 col-md-6 auction-single": true, "auction-end": product.status == 0 && product.seconds == 0 && product.expired && product.payment_failed === false}'>
+                                                  <div class="auction-wrap">
+                                                      <div class="img-wrap">
+                                                          <a href='#'
+                                                            ui-sref='root.account.edit_auction({id:product.id})'><img ng-src="{{ product.first_image|resizeto:400:250 }}"></a>
+                                                      </div>
+                                                      <div class="caption-wrap">
+                                                          <a href='#'
+                                                            ui-sref='root.account.edit_auction({id:product.id})'><h4>{{ product.name }}</h4></a>
+                                                          <div class="row mt-10">
+                                                              <div class="col-xs-4">
+                                                                  <div class="color-light-gray" translate>Time Left</div>
+                                                                  <div class="color-black fs-18"><timer countdown="product.seconds" max-time-unit="'hour'" interval="1000" finish-callback="auction_finished(product)" ng-show='product.seconds > 0'>{{hours}}:{{mminutes}}:{{sseconds}}</timer><div ng-if='product.seconds == 0'>00:00:00</div></div>
+                                                              </div>
+                                                              <div class="col-xs-5">
+                                                                  <div class="color-light-gray" translate>Highest Bid</div>
+                                                                  <div class="color-blue fs-18 auc-price">{{ product.bidding_price_formatted }} {{ "KD"|translate }}</div>
+                                                              </div>
+                                                              <div class="col-xs-3">
+                                                                  <div class="color-light-gray"> {{ "Bids"|translate }}({{ product.total_bids }})</div>
+                                                                  <div class="color-black fs-18" >
+                                                                      <button ng-show="(product.status == 0 && product.payment_failed) || (product.status == 0 && product.auction_processed)" type='button' class="btn btn-xs btn-danger" translate ng-disabled='true'>End Auction</button>
+                                                                      <button ng-show="product.seconds > 0 && product.status == 1" type='button' class="btn btn-xs btn-danger" data-target="#end-auction-modal" data-toggle="modal" translate ng-disabled='(product.status == 0  && product.payment_failed) || product.seconds == 0' ng-click='select_auction(product)'>End Auction</button>
+                                                                      <button ng-show="product.seconds == 0 && product.status == 1" type='button' class="btn btn-xs btn-danger" data-target="#end-auction-modal" data-toggle="modal" translate ng-click='select_auction(product)'>Take Action</button>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                            </div><!-- end each card -->
+                                        </div>
+                                      </div>
+
+                                      <!-- my bids -->
+                                      <div role="tabpanel" class="tab-pane fade" id="myBids">
+                                          <div class="row auction-cards">
+                                            <div class="col-xs-12 col-sm-6 col-md-6 auction-single"  ng-repeat='product in DATA.get("_my_bids")["results"]'>
+                                                  <div class="auction-wrap">
+                                                      <div class="img-wrap">
+                                                          <a href='#'><img ng-src="{{ product.auction.first_image|resizeto:400:250 }}"></a>
+                                                      </div>
+                                                      <div class="caption-wrap">
+                                                          <a href='#'><h4>{{ product.auction.name }}</h4></a>
+                                                          <div class="row mt-10">
+                                                              <div class="col-xs-7">
+                                                                  <div class="color-light-gray" translate>Bid Amount</div>
+                                                                  <div class="color-blue fs-18 auc-price">{{ product.amount }} {{ "KD"|translate }}</div>
+                                                              </div>
+                                                              <div class="col-xs-5">
+                                                                  <div class="color-light-gray" translate>Bid Status</div>
+                                                                  <div class="color-black fs-18" >
+                                                                      <span class="label label-success" ng-show='product.accepted' translate>accepted</span>
+                                                                      <span class="label label-danger"  ng-show='product.rejected' translate>rejected</span>
+                                                                      <span class="label label-primary" ng-show='!product.accepted && !product.rejected' translate>pending</span>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                            </div><!-- end each card -->
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                </div>
+                                <!-- ========= end bootstrap tab ====== -->
+
+                            </div>
+                        </div>
+                        
+                        <div class="spacer-xs"></div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+  <!-- =========== end auction modal =============== -->
+  <div class="modal fade" id="end-auction-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h6 class="text-center modal-title mt-20" ng-show="selected_auction.seconds > 0" translate>End Auction</h6>
+                <h6 class="text-center modal-title mt-20" ng-show="selected_auction.seconds == 0" translate>Take Action</h6>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                      <p translate ng-show="selected_auction.seconds > 0">Are you sure you want to end the auction?</p>
+                      <p translate ng-show="selected_auction.seconds == 0">Your auction ended so please take action.</p>
+                    </div>
+                </div>
+                <div class="row mt-10 mb-10">
+                    <div class="col-xs-12 text-center">
+                      <ul class="list-inline">
+                        <li><a class="btn btn-gray btn-block" translate ng-click='reject_auction()' data-dismiss="modal">Reject Offer</a></li>
+                        <li ng-show='selected_auction.total_bids > 0 '><a class="btn btn-green btn-block" translate ng-click='accept_auction()' data-dismiss="modal">Accept Offer</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
